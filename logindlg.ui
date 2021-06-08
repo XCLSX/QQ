@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginDlg</class>
+ <widget class="QDialog" name="LoginDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QTabWidget" name="tb_loginDlg">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>401</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab_login">
+    <attribute name="title">
+     <string>  登录  </string>
+    </attribute>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>341</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lb_account">
+        <property name="text">
+         <string>账号</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="le_account"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lb_pwd">
+        <property name="text">
+         <string>密码</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="le_pwd"/>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="pb_login">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>180</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> 登录</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_register">
+    <attribute name="title">
+     <string>  注册  </string>
+    </attribute>
+    <widget class="QPushButton" name="pb_register">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>180</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>注册</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>341</width>
+       <height>136</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lb_register_account">
+        <property name="text">
+         <string>账    号</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="le_register_account"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lb_register_name">
+        <property name="text">
+         <string>昵    称</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="le_register_name"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lb_register_pwd">
+        <property name="text">
+         <string>密    码</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="le_register_pwd"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lb_register_repwd">
+        <property name="text">
+         <string>确认密码</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="le_register_repwd"/>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
