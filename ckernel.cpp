@@ -19,6 +19,7 @@ void CKernel::InitObject()
     m_tcp = new QMyTcpClient;
     m_tcp->setIpAndPort();
     m_logindlg = new LoginDlg;
+    m_maindlh = new QQMainDlg;
     m_logindlg->show();
 }
 
@@ -66,11 +67,46 @@ void CKernel::slot_DealRs(char *szbuf, int nlen)
 //注册回复
 void CKernel::slot_RegisterRs(char *szbuf, int nlen)
 {
+//    userid_is_exist      0
+//    register_sucess      1
     qDebug()<<__func__;
+    STRU_REGISTER_RS * rs = (STRU_REGISTER_RS*)szbuf;
+    switch (rs->m_lResult) {
+    case userid_is_exist:
+        QMessageBox::about(m_logindlg,"提示","账号已存在");
+        break;
+    case register_sucess:
+        m_logindlg->GetUi()->tb_loginDlg->setCurrentIndex(0);
+        break;
+    default:
+        break;
+    }
 }
 //登录回复
 void CKernel::slot_LoginRs(char *szbuf, int nlen)
 {
+//    userid_no_exist
+//    password_error
+//    login_sucess
+//    user_online
     qDebug()<<__func__;
+    STRU_LOGIN_RS *rs = (STRU_LOGIN_RS*)szbuf;
+    switch (rs->m_lResult) {
+    case userid_no_exist:
+        QMessageBox::about(m_logindlg,"错误","用户不存在");
+        break;
+    case password_error:
+        QMessageBox::about(m_logindlg,"错误","密码不正确");
+        break;
+    case login_sucess:
+    {
+        m_logindlg->hide();
+        m_maindlh->SetInfo(rs->str_userInfo);
+        m_maindlh->show();
+        break;
+    }
+    default:
+        break;
+    }
 
 }

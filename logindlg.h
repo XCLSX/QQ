@@ -14,6 +14,7 @@ class LoginDlg : public QDialog
 public:
     explicit LoginDlg(QWidget *parent = nullptr);
     ~LoginDlg();
+    Ui::LoginDlg * GetUi() const;
 signals:
     void SIG_RegisterRq(char *,int);
 

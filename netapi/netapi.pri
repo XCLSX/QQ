@@ -11,3 +11,6 @@ SOURCES += \
     $$PWD/qmytcpclient.cpp \
     $$PWD/TCPNet.cpp \
 
+RESOURCES += \
+    $$PWD/res.qrc
+

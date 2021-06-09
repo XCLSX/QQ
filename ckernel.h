@@ -1,10 +1,11 @@
 #ifndef CKERNEL_H
 #define CKERNEL_H
-
+#include "ui_logindlg.h"
 #include <QObject>
 #include <logindlg.h>
 #include <qmytcpclient.h>
 #include <Packdef.h>
+#include <qqmaindlg.h>
 class CKernel;
 typedef void (CKernel::*PFUN)(char *,int);
 
@@ -44,6 +45,7 @@ private slots:
 public:
     LoginDlg *m_logindlg;
     QMyTcpClient *m_tcp;
+    QQMainDlg *m_maindlh;
     PFUN NetPack[DEF_PACK_COUNT];
 };
 

@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../tx/6.png</file>
+        <file>../tx/11.png</file>
+        <file>../tx/13.png</file>
+        <file>../tx/14.png</file>
+        <file>../tx/20.png</file>
+        <file>../tx/21.png</file>
+        <file>../images/folders.png</file>
+        <file>../images/font.png</file>
+        <file>../images/ok.png</file>
+        <file>../images/qq151217-02.png</file>
+        <file>../images/quit.png</file>
+        <file>../images/right.png</file>
+        <file>../images/save.png</file>
+        <file>../images/searchbox_button.png</file>
+        <file>../images/sett.png</file>
+        <file>../images/style.png</file>
+    </qresource>
+</RCC>

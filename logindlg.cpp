@@ -13,6 +13,13 @@ LoginDlg::~LoginDlg()
     delete ui;
 }
 
+Ui::LoginDlg *LoginDlg::GetUi() const
+{
+    return ui;
+}
+
+
+
 void LoginDlg::on_pb_register_clicked()
 {
     QString account = ui->le_register_account->text();
