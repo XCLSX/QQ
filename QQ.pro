@@ -21,19 +21,25 @@ SOURCES += \
     ckernel.cpp \
     logindlg.cpp \
     main.cpp \
-    qqmaindlg.cpp
+    qqmaindlg.cpp \
+    searchfrienddlg.cpp
 
 HEADERS += \
     Packdef.h \
     ckernel.h \
     logindlg.h \
-    qqmaindlg.h
+    qqmaindlg.h \
+    searchfrienddlg.h
 
 FORMS += \
     logindlg.ui \
-    qqmaindlg.ui
+    qqmaindlg.ui \
+    searchfrienddlg.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res.qrc

@@ -32,16 +32,18 @@ public:
     void SetNetPack();
 signals:
 
-private slots:
+private slots:      //请求
     void slot_RegisterRq(char *,int);
 
     void slot_LoginRq(char *,int);
 
-private slots:
+    void slot_SearchFriendRq(char *,int);
+
+private slots:      //回复
     void slot_DealRs(char *,int);
     void slot_RegisterRs(char *,int);
     void slot_LoginRs(char *,int);
-
+    void slot_SearchFriendRs(char *,int);
 public:
     LoginDlg *m_logindlg;
     QMyTcpClient *m_tcp;

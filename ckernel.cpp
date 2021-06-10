@@ -28,6 +28,8 @@ void CKernel::MyConnect()
     connect(m_tcp,SIGNAL(SIG_ReadyData(char*,int)),this,SLOT(slot_DealRs(char*,int)));
     connect(m_logindlg,SIGNAL(SIG_RegisterRq(char*,int)),this,SLOT(slot_RegisterRq(char*,int)));
     connect(m_logindlg,SIGNAL(SIG_LoginRq(char*,int)),this,SLOT(slot_LoginRq(char*,int)));
+    connect(m_maindlh->m_SearchDlg,SIGNAL(SIG_Search(char*,int)),this,SLOT(slot_SearchFriendRq(char*,int)));
+
 
 }
 
@@ -47,6 +49,12 @@ void CKernel::slot_RegisterRq(char *szbuf, int nlen)
 void CKernel::slot_LoginRq(char *szbuf, int nlen)
 {
     qDebug()<<__func__;
+    m_tcp->SendData(szbuf,nlen);
+}
+
+void CKernel::slot_SearchFriendRq(char *szbuf, int nlen)
+{
+     qDebug()<<__func__;
     m_tcp->SendData(szbuf,nlen);
 }
 
@@ -101,12 +109,17 @@ void CKernel::slot_LoginRs(char *szbuf, int nlen)
     case login_sucess:
     {
         m_logindlg->hide();
-        m_maindlh->SetInfo(rs->str_userInfo);
+        m_maindlh->SetInfo(rs->m_userInfo);
         m_maindlh->show();
         break;
     }
     default:
         break;
     }
+
+}
+
+void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
+{
 
 }

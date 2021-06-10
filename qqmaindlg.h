@@ -3,7 +3,8 @@
 
 #include <QDialog>
 #include <Packdef.h>
-
+#include <searchfrienddlg.h>
+class CKernel;
 namespace Ui {
 class QQMainDlg;
 }
@@ -15,9 +16,19 @@ class QQMainDlg : public QDialog
 public:
     explicit QQMainDlg(QWidget *parent = nullptr);
     ~QQMainDlg();
+private slots:
+    void on_pb_addfriend_clicked();
     void SetInfo(STRU_USER_INFO& info);
+
+
 private:
     Ui::QQMainDlg *ui;
+    SearchFriendDlg *m_SearchDlg;
+    friend class CKernel;
+    int m_userid;
+    int icon_id;
+    char szName[MAX_SIZE];
+    char szFelling[MAX_SIZE];
 };
 
 #endif // QQMAINDLG_H
