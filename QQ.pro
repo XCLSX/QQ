@@ -22,19 +22,25 @@ SOURCES += \
     logindlg.cpp \
     main.cpp \
     qqmaindlg.cpp \
-    searchfrienddlg.cpp
+    searchfrienddlg.cpp \
+    searchfrienditem.cpp \
+    useritem.cpp
 
 HEADERS += \
     Packdef.h \
     ckernel.h \
     logindlg.h \
     qqmaindlg.h \
-    searchfrienddlg.h
+    searchfrienddlg.h \
+    searchfrienditem.h \
+    useritem.h
 
 FORMS += \
     logindlg.ui \
     qqmaindlg.ui \
-    searchfrienddlg.ui
+    searchfrienddlg.ui \
+    searchfrienditem.ui \
+    useritem.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

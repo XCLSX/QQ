@@ -1,11 +1,18 @@
 #include "logindlg.h"
 #include "ui_logindlg.h"
 
+extern QMyTcpClient *m_tcp;
+
+
 LoginDlg::LoginDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LoginDlg)
 {
     ui->setupUi(this);
+//    ui->tb_loginDlg->setStyleSheet("QTabWidget:pane {border-top:0px solid #e8f3f9;background:  transparent; }");
+//    ui->le_account->setStyleSheet("QLineEdit{background-color: rgba(96, 96, 96, 0.4)}"
+//                             "QLineEdit{border-width:2;border-style:outset;border : 1px solid white;}");
+//    ui->le_pwd->setStyleSheet("QLineEdit{background-color:rgba(96,96,96,0.4)}");
 }
 
 LoginDlg::~LoginDlg()
@@ -17,6 +24,15 @@ Ui::LoginDlg *LoginDlg::GetUi() const
 {
     return ui;
 }
+
+void LoginDlg::paintEvent(QPaintEvent *event)
+{
+//    QPainter painter(this);
+//    QPixmap  pix;
+//    pix.load(":/images/back.jpg");
+    //    painter.drawPixmap(0,0,this->width(),this->height(),pix);
+}
+
 
 
 
@@ -38,10 +54,10 @@ void LoginDlg::on_pb_register_clicked()
     }
     STRU_REGISTER_RQ rq;
     strcpy(rq.m_szAccount,account.toStdString().c_str());
-    strcpy(rq.m_szUserName,name.toStdString().c_str());
-    strcpy(rq.m_szPassword,pwd.toStdString().c_str());
+    strcpy(rq.m_szName,name.toStdString().c_str());
+    strcpy(rq.m_szPwd,pwd.toStdString().c_str());
 
-    Q_EMIT SIG_RegisterRq((char *)&rq,sizeof(rq));
+    m_tcp->SendData((char *)&rq,sizeof(rq));
 }
 
 void LoginDlg::on_pb_login_clicked()
@@ -56,7 +72,6 @@ void LoginDlg::on_pb_login_clicked()
 
     STRU_LOGIN_RQ rq;
     strcpy(rq.m_szAccount,account.toStdString().c_str());
-    strcpy(rq.m_szPassword,pwd.toStdString().c_str());
-
-    Q_EMIT SIG_LoginRq((char *)&rq,sizeof(rq));
+    strcpy(rq.m_szPwd,pwd.toStdString().c_str());
+    m_tcp->SendData((char *)&rq,sizeof(rq));
 }

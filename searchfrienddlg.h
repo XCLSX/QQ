@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <Packdef.h>
+#include <searchfrienditem.h>
+#include <QVBoxLayout>
 namespace Ui {
 class SearchFriendDlg;
 }
@@ -14,14 +16,21 @@ class SearchFriendDlg : public QDialog
 public:
     explicit SearchFriendDlg(QWidget *parent = nullptr);
     ~SearchFriendDlg();
+    void AddFriWidget(QWidget*item);
 
 signals:
     void SIG_Search(char *,int);
 private slots:
-    void on_pb_search_clicked();
+    void slot_UpdateFriList(char *);
+
+    void on_pb_people_search_clicked();
+
+    void on_pb_group_search_clicked();
 
 private:
     Ui::SearchFriendDlg *ui;
+    QVBoxLayout *m_friLayout;
+    QVBoxLayout *m_groupLayout;
 };
 
 #endif // SEARCHFRIENDDLG_H

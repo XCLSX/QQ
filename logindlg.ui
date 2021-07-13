@@ -28,7 +28,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_login">
     <attribute name="title">
@@ -76,7 +76,7 @@
       </rect>
      </property>
      <property name="text">
-      <string> 登录</string>
+      <string>登录</string>
      </property>
     </widget>
    </widget>
@@ -97,7 +97,7 @@
       <string>注册</string>
      </property>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>

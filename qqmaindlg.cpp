@@ -11,6 +11,9 @@ QQMainDlg::QQMainDlg(QWidget *parent) :
     icon_id = 0;
     memset(szName,0,sizeof(szName));
     memset(szFelling,0,sizeof(szFelling));
+    m_layout = new QVBoxLayout;
+    ui->wid_friendList->setLayout(m_layout);
+
 }
 
 QQMainDlg::~QQMainDlg()
@@ -18,19 +21,45 @@ QQMainDlg::~QQMainDlg()
     delete ui;
 }
 
-void QQMainDlg::SetInfo(STRU_USER_INFO &info)
+SearchFriendDlg *QQMainDlg::GetSearchDLg()
 {
-    m_userid = info.m_user_id;
-    icon_id = info.m_icon_id;
-    strcpy(szName,info.sz_userName);
-    strcpy(szFelling,info.sz_felling);
+    return m_SearchDlg;
+}
+
+void QQMainDlg::SetInfo(STRU_USER_INFO *info)
+{
+    m_userid = info->m_user_id;
+    icon_id = info->m_icon_id;
+    QPixmap icon;
+    QString str = QString(":/tx/%1.png").
+            arg(icon_id);
+    icon.load(str.toStdString().c_str());
+    ui->pb_icon->setIcon(icon);
+    strcpy(szName,info->m_userName);
+    strcpy(szFelling,info->sz_feeling);
     ui->lb_name->setText(QString(szName));
     ui->lb_felling->setText(szFelling);
-    ui->pb_icon->setIcon(QIcon(QString(":/")));
 
+    UserItem *item = new UserItem;
+    item->SetInfo(info);
+    this->AddUserItem(item);
 }
 
-void QQMainDlg::on_pb_addfriend_clicked()
+
+
+void QQMainDlg::on_pb_Search_clicked()
 {
+    m_SearchDlg = new SearchFriendDlg;
     m_SearchDlg->show();
 }
+
+void QQMainDlg::on_pb_icon_clicked()
+{
+
+}
+
+void QQMainDlg::AddUserItem(QWidget *item)
+{
+    m_layout->addWidget(item);
+}
+

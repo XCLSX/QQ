@@ -1,11 +1,17 @@
 #include "searchfrienddlg.h"
 #include "ui_searchfrienddlg.h"
 
+extern QMyTcpClient *m_tcp;
 SearchFriendDlg::SearchFriendDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SearchFriendDlg)
 {
     ui->setupUi(this);
+    m_friLayout = new QVBoxLayout;
+    m_friLayout->setContentsMargins(0,0,0,0);//设置外边距
+    m_friLayout->setSpacing(2);
+    ui->wid_friendList->setLayout(m_friLayout);
+
 }
 
 SearchFriendDlg::~SearchFriendDlg()
@@ -13,10 +19,24 @@ SearchFriendDlg::~SearchFriendDlg()
     delete ui;
 }
 
-void SearchFriendDlg::on_pb_search_clicked()
+void SearchFriendDlg::AddFriWidget(QWidget *item)
 {
-    string str = ui->le_search->text().toStdString();
-    STRU_SEARCH_FRIEND_RQ rq;
-    strcpy(rq.m_szbuf , str.c_str());
-    Q_EMIT SIG_Search((char *)&rq,sizeof(rq));
+    m_friLayout->addWidget(item);
+}
+
+
+
+void SearchFriendDlg::on_pb_people_search_clicked()
+{
+    STRU_SEARCHFRIEND_RQ rq;
+    strcpy(rq.m_szBuf,ui->le_perple_search->text().toStdString().c_str());
+    m_tcp->SendData((char *)&rq,sizeof(rq));
+
+}
+
+void SearchFriendDlg::on_pb_group_search_clicked()
+{
+    STRU_SEARCHFRIEND_RQ rq;
+    strcpy(rq.m_szBuf,ui->le_perple_search->text().toStdString().c_str());
+    m_tcp->SendData((char *)&rq,sizeof(rq));
 }

@@ -1,8 +1,9 @@
 #include "ckernel.h"
+QMyTcpClient *m_tcp;
 
 CKernel *CKernel::GetInstance()
 {
-    static CKernel ck ;
+    static CKernel ck;
     return &ck;
 }
 
@@ -19,16 +20,15 @@ void CKernel::InitObject()
     m_tcp = new QMyTcpClient;
     m_tcp->setIpAndPort();
     m_logindlg = new LoginDlg;
-    m_maindlh = new QQMainDlg;
+    m_maindlg = new QQMainDlg;
     m_logindlg->show();
 }
 
 void CKernel::MyConnect()
 {
     connect(m_tcp,SIGNAL(SIG_ReadyData(char*,int)),this,SLOT(slot_DealRs(char*,int)));
-    connect(m_logindlg,SIGNAL(SIG_RegisterRq(char*,int)),this,SLOT(slot_RegisterRq(char*,int)));
-    connect(m_logindlg,SIGNAL(SIG_LoginRq(char*,int)),this,SLOT(slot_LoginRq(char*,int)));
-    connect(m_maindlh->m_SearchDlg,SIGNAL(SIG_Search(char*,int)),this,SLOT(slot_SearchFriendRq(char*,int)));
+
+    connect(m_maindlg->m_SearchDlg,SIGNAL(SIG_Search(char*,int)),this,SLOT(slot_SearchFriendRq(char*,int)));
 
 
 }
@@ -37,26 +37,16 @@ void CKernel::SetNetPack()
 {
     NetPack[DEF_PACK_REGISTER_RS - DEF_PACK_BASE] = slot_RegisterRs;
     NetPack[DEF_PACK_LOGIN_RS - DEF_PACK_BASE] = slot_LoginRs;
+    NetPack[DEF_PACK_SEARCHFRIEND_RS - DEF_PACK_BASE] = slot_SearchFriendRs;
+    NetPack[DEF_PACK_FRIENDLIST_FRESH_RS - DEF_PACK_BASE] = slot_Fresh_FriListRs;
+
+
 }
 ////发出请求包
 //注册请求
-void CKernel::slot_RegisterRq(char *szbuf, int nlen)
-{
-    qDebug()<<__func__;
-    m_tcp->SendData(szbuf,nlen);
-}
 
-void CKernel::slot_LoginRq(char *szbuf, int nlen)
-{
-    qDebug()<<__func__;
-    m_tcp->SendData(szbuf,nlen);
-}
 
-void CKernel::slot_SearchFriendRq(char *szbuf, int nlen)
-{
-     qDebug()<<__func__;
-    m_tcp->SendData(szbuf,nlen);
-}
+
 
 ////处理回复包
 void CKernel::slot_DealRs(char *szbuf, int nlen)
@@ -84,6 +74,7 @@ void CKernel::slot_RegisterRs(char *szbuf, int nlen)
         QMessageBox::about(m_logindlg,"提示","账号已存在");
         break;
     case register_sucess:
+        QMessageBox::about(m_logindlg,"提示","注册成功");
         m_logindlg->GetUi()->tb_loginDlg->setCurrentIndex(0);
         break;
     default:
@@ -109,8 +100,8 @@ void CKernel::slot_LoginRs(char *szbuf, int nlen)
     case login_sucess:
     {
         m_logindlg->hide();
-        m_maindlh->SetInfo(rs->m_userInfo);
-        m_maindlh->show();
+        m_maindlg->SetInfo(&rs->m_userInfo);
+        m_maindlg->show();
         break;
     }
     default:
@@ -122,4 +113,22 @@ void CKernel::slot_LoginRs(char *szbuf, int nlen)
 void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
 {
 
+    STRU_SEARCHFRIEND_RS *rs = (STRU_SEARCHFRIEND_RS*) szbuf;
+    int i=0;
+    SearchFriendDlg *dlg = m_maindlg->GetSearchDLg();
+    SearchFriendItem *item = new SearchFriendItem;
+    while(rs->m_userInfoArr[i].m_user_id!=0)
+    {
+        item->InitInfo(&rs->m_userInfoArr[i]);
+        dlg->AddFriWidget(item);
+        i++;
+    }
+
+}
+
+void CKernel::slot_Fresh_FriListRs(char *szbuf, int len)
+{
+    UserItem *item;
+   // STRU_USER_INFO info;
+    m_maindlg->AddUserItem(item);
 }

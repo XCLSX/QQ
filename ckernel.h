@@ -3,7 +3,6 @@
 #include "ui_logindlg.h"
 #include <QObject>
 #include <logindlg.h>
-#include <qmytcpclient.h>
 #include <Packdef.h>
 #include <qqmaindlg.h>
 class CKernel;
@@ -31,23 +30,17 @@ public:
     void MyConnect();
     void SetNetPack();
 signals:
-
 private slots:      //请求
-    void slot_RegisterRq(char *,int);
-
-    void slot_LoginRq(char *,int);
-
-    void slot_SearchFriendRq(char *,int);
 
 private slots:      //回复
     void slot_DealRs(char *,int);
     void slot_RegisterRs(char *,int);
     void slot_LoginRs(char *,int);
     void slot_SearchFriendRs(char *,int);
+    void slot_Fresh_FriListRs(char*,int);
 public:
     LoginDlg *m_logindlg;
-    QMyTcpClient *m_tcp;
-    QQMainDlg *m_maindlh;
+    QQMainDlg *m_maindlg;
     PFUN NetPack[DEF_PACK_COUNT];
 };
 

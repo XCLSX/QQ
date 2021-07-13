@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <Packdef.h>
 #include <searchfrienddlg.h>
+#include <QVBoxLayout>
+#include <useritem.h>
 class CKernel;
 namespace Ui {
 class QQMainDlg;
@@ -16,9 +18,18 @@ class QQMainDlg : public QDialog
 public:
     explicit QQMainDlg(QWidget *parent = nullptr);
     ~QQMainDlg();
+    SearchFriendDlg *GetSearchDLg();
+    void AddUserItem(QWidget*item);
+
 private slots:
-    void on_pb_addfriend_clicked();
-    void SetInfo(STRU_USER_INFO& info);
+    void SetInfo(STRU_USER_INFO* info);
+
+
+    void on_pb_Search_clicked();
+
+    void on_pb_icon_clicked();
+
+private:
 
 
 private:
@@ -29,6 +40,7 @@ private:
     int icon_id;
     char szName[MAX_SIZE];
     char szFelling[MAX_SIZE];
+    QVBoxLayout *m_layout;
 };
 
 #endif // QQMAINDLG_H

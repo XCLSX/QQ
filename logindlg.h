@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <Packdef.h>
+#include <QPaintEvent>
 namespace Ui {
 class LoginDlg;
 }
@@ -14,11 +15,9 @@ class LoginDlg : public QDialog
 public:
     explicit LoginDlg(QWidget *parent = nullptr);
     ~LoginDlg();
-    Ui::LoginDlg * GetUi() const;
-signals:
-    void SIG_RegisterRq(char *,int);
 
-    void SIG_LoginRq(char *,int);
+    Ui::LoginDlg * GetUi() const;
+    void paintEvent(QPaintEvent *event);
 private slots:
     void on_pb_register_clicked();
 
@@ -26,6 +25,7 @@ private slots:
 
 private:
     Ui::LoginDlg *ui;
+
 };
 
 #endif // LOGINDLG_H
