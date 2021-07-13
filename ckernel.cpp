@@ -128,7 +128,14 @@ void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
 
 void CKernel::slot_Fresh_FriListRs(char *szbuf, int len)
 {
-    UserItem *item;
-   // STRU_USER_INFO info;
-    m_maindlg->AddUserItem(item);
+    STRU_GetFriList_Rs *rs = (STRU_GetFriList_Rs*)szbuf;
+    UserItem *item = NULL;
+    int i=0;
+    while(rs->m_FriInfo[i].m_user_id!=0)
+    {
+        item = new UserItem;
+        item->SetInfo(&rs->m_FriInfo[i]);
+        m_maindlg->AddUserItem(item);
+        i++;
+    }
 }

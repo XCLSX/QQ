@@ -13,7 +13,6 @@
 using namespace std;
 
 
-
 #define BOOL bool
 #define DEF_PACK_BASE  (10000)
 
@@ -135,6 +134,18 @@ typedef struct STRU_LOGIN_RS
     STRU_USER_INFO m_userInfo;
 }STRU_LOGIN_RS;
 
+//获取好友列表
+typedef struct STRU_GetFriList_Rs
+{
+    STRU_GetFriList_Rs()
+    {
+        m_nType = DEF_PACK_FRIENDLIST_FRESH_RS;
+    }
+    PackType m_nType;
+    STRU_USER_INFO m_FriInfo[100];
+}STRU_GetFriList_Rs;
+
+//添加好友
 typedef struct STRU_SEARCHFRIEND_RQ
 {
     STRU_SEARCHFRIEND_RQ()
@@ -161,6 +172,7 @@ typedef struct STRU_SEARCHFRIEND_RS
 
 
 #endif
+
 
 
 

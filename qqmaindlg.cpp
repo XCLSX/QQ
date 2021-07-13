@@ -40,9 +40,9 @@ void QQMainDlg::SetInfo(STRU_USER_INFO *info)
     ui->lb_name->setText(QString(szName));
     ui->lb_felling->setText(szFelling);
 
-    UserItem *item = new UserItem;
-    item->SetInfo(info);
-    this->AddUserItem(item);
+//    UserItem *item = new UserItem;
+//    item->SetInfo(info);
+//    this->AddUserItem(item);
 }
 
 
