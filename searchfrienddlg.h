@@ -14,14 +14,16 @@ class SearchFriendDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit SearchFriendDlg(QWidget *parent = nullptr);
+    explicit SearchFriendDlg(int,QWidget *parent = nullptr);
     ~SearchFriendDlg();
     void AddFriWidget(QWidget*item);
+    void ClearLayout();
+    vector<SearchFriendItem*> vec_friend;
 
 signals:
     void SIG_Search(char *,int);
 private slots:
-    void slot_UpdateFriList(char *);
+    //void slot_UpdateFriList(char *);
 
     void on_pb_people_search_clicked();
 
@@ -29,6 +31,7 @@ private slots:
 
 private:
     Ui::SearchFriendDlg *ui;
+    int m_userid;
     QVBoxLayout *m_friLayout;
     QVBoxLayout *m_groupLayout;
 };

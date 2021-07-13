@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <Packdef.h>
 #include <QPaintEvent>
+
 namespace Ui {
 class LoginDlg;
 }

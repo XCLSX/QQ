@@ -29,6 +29,8 @@ typedef enum Net_PACK
     DEF_PACK_SEARCHFRIEND_RQ,                   //查找好友请求
     DEF_PACK_SEARCHFRIEND_RS,
 
+    DEF_PACK_ADDFRIEND_RQ,                      //添加好友请求
+    DEF_PACK_ADDFRIEND_RS,
 
 }Net_PACK;
 
@@ -145,7 +147,7 @@ typedef struct STRU_GetFriList_Rs
     STRU_USER_INFO m_FriInfo[100];
 }STRU_GetFriList_Rs;
 
-//添加好友
+//查找好友
 typedef struct STRU_SEARCHFRIEND_RQ
 {
     STRU_SEARCHFRIEND_RQ()
@@ -170,12 +172,21 @@ typedef struct STRU_SEARCHFRIEND_RS
     int m_userid[MAX_SIZE];
 }STRU_SEARCHFRIEND_RS;
 
+//添加好友
+typedef struct STRU_ADDFRIEND_RQ
+{
+    STRU_ADDFRIEND_RQ()
+    {
+        m_nType = DEF_PACK_ADDFRIEND_RQ;
+        m_frid = 0;
+    }
+    PackType m_nType;
+    int m_frid;
+    STRU_USER_INFO m_UserInfo;
+}STRU_ADDFRIEND_RQ;
+
 
 #endif
-
-
-
-
 
 
 

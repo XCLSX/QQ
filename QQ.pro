@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addfrienditem.cpp \
     ckernel.cpp \
     logindlg.cpp \
     main.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     Packdef.h \
+    addfrienditem.h \
     ckernel.h \
     logindlg.h \
     qqmaindlg.h \
@@ -36,6 +38,7 @@ HEADERS += \
     useritem.h
 
 FORMS += \
+    addfrienditem.ui \
     logindlg.ui \
     qqmaindlg.ui \
     searchfrienddlg.ui \

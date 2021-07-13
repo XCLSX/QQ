@@ -6,6 +6,7 @@
 #include <searchfrienddlg.h>
 #include <QVBoxLayout>
 #include <useritem.h>
+#include <addfrienditem.h>
 class CKernel;
 namespace Ui {
 class QQMainDlg;
@@ -20,7 +21,7 @@ public:
     ~QQMainDlg();
     SearchFriendDlg *GetSearchDLg();
     void AddUserItem(QWidget*item);
-
+    void AddMsg(char *,int mode = 0);
 private slots:
     void SetInfo(STRU_USER_INFO* info);
 
@@ -35,12 +36,14 @@ private:
 private:
     Ui::QQMainDlg *ui;
     SearchFriendDlg *m_SearchDlg;
+    STRU_USER_INFO* m_userInfo;
     friend class CKernel;
-    int m_userid;
-    int icon_id;
-    char szName[MAX_SIZE];
-    char szFelling[MAX_SIZE];
-    QVBoxLayout *m_layout;
+
+
+
+
+    QVBoxLayout *m_Frilayout;
+    QVBoxLayout *m_Msglayout;
 };
 
 #endif // QQMAINDLG_H

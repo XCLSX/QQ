@@ -38,10 +38,15 @@ private slots:      //回复
     void slot_LoginRs(char *,int);
     void slot_SearchFriendRs(char *,int);
     void slot_Fresh_FriListRs(char*,int);
+    void slot_AddfriendRq(char *,int);
+
+
+    void slot_Destroyapp();
 public:
     LoginDlg *m_logindlg;
     QQMainDlg *m_maindlg;
     PFUN NetPack[DEF_PACK_COUNT];
+    STRU_USER_INFO *m_userInfo;
 };
 
 #endif // CKERNEL_H

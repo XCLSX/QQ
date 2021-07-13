@@ -17,6 +17,7 @@ public:
     void SetInfo(STRU_USER_INFO*);
 private slots:
 private:
+    int m_mode;
     Ui::UserItem *ui;
     int m_userid;
     QString m_name;
