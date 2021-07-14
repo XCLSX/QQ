@@ -16,7 +16,7 @@ public:
     ~UserItem();
     void SetInfo(STRU_USER_INFO*);
 private slots:
-private:
+public:
     int m_mode;
     Ui::UserItem *ui;
     int m_userid;

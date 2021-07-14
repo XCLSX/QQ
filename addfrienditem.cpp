@@ -22,3 +22,16 @@ void AddFriendItem::SetInfo(STRU_USER_INFO *info,int userid)
 
 }
 
+
+void AddFriendItem::on_pb_refuse_clicked()
+{
+    Q_EMIT SIG_mCloseWidget(this);
+}
+
+void AddFriendItem::on_pb_accept_clicked()
+{
+    STRU_ADDFRIEND_RS rs;
+    rs.m_frid = this->m_fri_id;
+    rs.m_userid = m_userid;
+    Q_EMIT SIG_Accept(this,(char *)&rs);
+}

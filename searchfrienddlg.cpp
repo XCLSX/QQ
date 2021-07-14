@@ -1,7 +1,7 @@
 #include "searchfrienddlg.h"
 #include "ui_searchfrienddlg.h"
-
 extern QMyTcpClient *m_tcp;
+
 SearchFriendDlg::SearchFriendDlg(int id,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SearchFriendDlg)
@@ -12,6 +12,7 @@ SearchFriendDlg::SearchFriendDlg(int id,QWidget *parent) :
     m_friLayout->setSpacing(2);
     ui->wid_friendList->setLayout(m_friLayout);
     m_userid = id;
+
 }
 
 SearchFriendDlg::~SearchFriendDlg()
@@ -54,5 +55,10 @@ void SearchFriendDlg::on_pb_group_search_clicked()
     STRU_SEARCHFRIEND_RQ rq;
     strcpy(rq.m_szBuf,ui->le_perple_search->text().toStdString().c_str());
     m_tcp->SendData((char *)&rq,sizeof(rq));
+
+}
+
+void SearchFriendDlg::slot_UpdateDlg(char *szbuf)
+{
 
 }

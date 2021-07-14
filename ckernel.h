@@ -30,6 +30,7 @@ public:
     void MyConnect();
     void SetNetPack();
 signals:
+    void SIG_UpdateSearchfriendList(char *);
 private slots:      //请求
 
 private slots:      //回复
@@ -39,7 +40,7 @@ private slots:      //回复
     void slot_SearchFriendRs(char *,int);
     void slot_Fresh_FriListRs(char*,int);
     void slot_AddfriendRq(char *,int);
-
+    void slot_UpdateFriendStatus(char *,int);
 
     void slot_Destroyapp();
 public:
@@ -47,6 +48,7 @@ public:
     QQMainDlg *m_maindlg;
     PFUN NetPack[DEF_PACK_COUNT];
     STRU_USER_INFO *m_userInfo;
+
 };
 
 #endif // CKERNEL_H

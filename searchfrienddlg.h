@@ -19,7 +19,6 @@ public:
     void AddFriWidget(QWidget*item);
     void ClearLayout();
     vector<SearchFriendItem*> vec_friend;
-
 signals:
     void SIG_Search(char *,int);
 private slots:
@@ -28,6 +27,8 @@ private slots:
     void on_pb_people_search_clicked();
 
     void on_pb_group_search_clicked();
+
+    void slot_UpdateDlg(char *);
 
 private:
     Ui::SearchFriendDlg *ui;

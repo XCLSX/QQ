@@ -20,10 +20,13 @@ public:
     explicit QQMainDlg(QWidget *parent = nullptr);
     ~QQMainDlg();
     SearchFriendDlg *GetSearchDLg();
+    void FreshFriendList(char *);
     void AddUserItem(QWidget*item);
     void AddMsg(char *,int mode = 0);
-private slots:
+    void UpdateFriendStatus(char *);
     void SetInfo(STRU_USER_INFO* info);
+
+private slots:
 
 
     void on_pb_Search_clicked();
@@ -37,13 +40,15 @@ private:
     Ui::QQMainDlg *ui;
     SearchFriendDlg *m_SearchDlg;
     STRU_USER_INFO* m_userInfo;
-    friend class CKernel;
+    //friend class CKernel;
 
-
-
+    vector<UserItem*> m_FriendVec;
+    vector<QWidget*> m_MsgVec;
+    vector<AddFriendItem*> m_AddfriVec;
 
     QVBoxLayout *m_Frilayout;
     QVBoxLayout *m_Msglayout;
+
 };
 
 #endif // QQMAINDLG_H

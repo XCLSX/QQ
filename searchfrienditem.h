@@ -16,7 +16,8 @@ public:
     explicit SearchFriendItem(STRU_USER_INFO*,QWidget *parent = nullptr);
     ~SearchFriendItem();
     void InitInfo(STRU_USER_INFO *);
-
+signals:
+    void SIG__Addfriend(char *);
 private slots:
     void on_pb_add_clicked();
 

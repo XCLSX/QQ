@@ -1,6 +1,7 @@
 #include "ckernel.h"
 QMyTcpClient *m_tcp;
 
+
 CKernel *CKernel::GetInstance()
 {
     static CKernel ck;
@@ -19,8 +20,8 @@ void CKernel::InitObject()
 {
     m_tcp = new QMyTcpClient;
     m_tcp->setIpAndPort();
-    m_logindlg = new LoginDlg;
-    m_maindlg = new QQMainDlg;
+    m_logindlg = new LoginDlg();
+    m_maindlg = new QQMainDlg();
     m_logindlg->show();
 }
 
@@ -28,6 +29,7 @@ void CKernel::MyConnect()
 {
     connect(m_tcp,SIGNAL(SIG_ReadyData(char*,int)),this,SLOT(slot_DealRs(char*,int)));
 
+    //connect(this,SIGNAL(SIG_UpdateSearchfriendList(char*)),m_maindlg->GetSearchDLg(),SLOT(slot_UpdateDlg(char*)));
     //connect(m_maindlg->m_SearchDlg,SIGNAL(SIG_Search(char*,int)),this,SLOT(slot_SearchFriendRq(char*,int)));
 
 
@@ -40,7 +42,7 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_SEARCHFRIEND_RS - DEF_PACK_BASE] = slot_SearchFriendRs;
     NetPack[DEF_PACK_FRIENDLIST_FRESH_RS - DEF_PACK_BASE] = slot_Fresh_FriListRs;
     NetPack[DEF_PACK_ADDFRIEND_RQ - DEF_PACK_BASE] = slot_AddfriendRq;
-
+    NetPack[DEF_PACK_UPDATESTATUS - DEF_PACK_BASE] = slot_UpdateFriendStatus;
 }
 ////发出请求包
 //注册请求
@@ -116,7 +118,7 @@ void CKernel::slot_LoginRs(char *szbuf, int nlen)
     }
 
 }
-
+//查找好友回复
 void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
 {
 
@@ -130,29 +132,30 @@ void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
         item->InitInfo(&rs->m_userInfoArr[i]);
         dlg->AddFriWidget(item);
         dlg->vec_friend.push_back(item);
+        connect(item,&SearchFriendItem::SIG__Addfriend,[=](char *szbuf)
+        {
+            STRU_ADDFRIEND_RQ *rq = (STRU_ADDFRIEND_RQ*)szbuf;
+            m_tcp->SendData(szbuf,sizeof(szbuf));
+        });
         i++;
     }
 
 }
-
+//刷新好友列表
 void CKernel::slot_Fresh_FriListRs(char *szbuf, int len)
 {
-    STRU_GetFriList_Rs *rs = (STRU_GetFriList_Rs*)szbuf;
-    UserItem *item = NULL;
-    int i=0;
-    while(rs->m_FriInfo[i].m_user_id!=0)
-    {
-        item = new UserItem;
-        item->SetInfo(&rs->m_FriInfo[i]);
-        m_maindlg->AddUserItem(item);
-        i++;
-    }
+   m_maindlg->FreshFriendList(szbuf);
 }
-
+//添加好友请求
 void CKernel::slot_AddfriendRq(char *szbuf, int len)
 {
     m_maindlg->AddMsg(szbuf,1);
 
+}
+
+void CKernel::slot_UpdateFriendStatus(char *szbuf, int nlen)
+{
+    m_maindlg->UpdateFriendStatus(szbuf);
 }
 
 void CKernel::slot_Destroyapp()

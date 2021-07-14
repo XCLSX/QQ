@@ -32,6 +32,11 @@ typedef enum Net_PACK
     DEF_PACK_ADDFRIEND_RQ,                      //添加好友请求
     DEF_PACK_ADDFRIEND_RS,
 
+    DEF_PACK_UPDATESTATUS,                      //更新用户状态
+
+
+
+    DEF_PACK_TEST,
 }Net_PACK;
 
 
@@ -184,13 +189,36 @@ typedef struct STRU_ADDFRIEND_RQ
     int m_frid;
     STRU_USER_INFO m_UserInfo;
 }STRU_ADDFRIEND_RQ;
+typedef struct STRU_ADDFRIEND_RS
+{
+    STRU_ADDFRIEND_RS()
+    {
+        m_nType = DEF_PACK_ADDFRIEND_RS;
+    }
+    int m_userid;
+    int m_frid;
+    PackType m_nType;
+}STRU_ADDFRIEND_RS;
 
+//更新在线状态
+typedef struct STRU_UPDATE_STATUS
+{
+    STRU_UPDATE_STATUS()
+    {
+        m_nType = DEF_PACK_UPDATESTATUS;
+    }
+    PackType m_nType;
+    STRU_USER_INFO m_UserInfo;
+}STRU_UPDATE_STATUS;
 
+typedef struct STRU_TEST
+{
+    STRU_TEST()
+    {
+        m_nType = DEF_PACK_TEST;
+    }
+    PackType m_nType;
+}STRU_TEST;
 #endif
-
-
-
-
-
 
 
