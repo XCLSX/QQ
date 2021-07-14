@@ -44,7 +44,6 @@ void SearchFriendItem::on_pb_add_clicked()
    STRU_ADDFRIEND_RQ rq;
    rq.m_frid = m_frid;
    rq.m_UserInfo = *m_UserInfo;
-   //Q_EMIT SIG__Addfriend((char *)&rq);
    m_tcp->SendData((char *)&rq,sizeof(rq));
 
 }

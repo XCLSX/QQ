@@ -1,6 +1,6 @@
 #ifndef _PACKDEF_H
 #define _PACKDEF_H
-
+#include <iostream>
 #include <QMessageBox>
 #include <qmytcpclient.h>
 #include <QDebug>
@@ -195,9 +195,9 @@ typedef struct STRU_ADDFRIEND_RS
     {
         m_nType = DEF_PACK_ADDFRIEND_RS;
     }
+    PackType m_nType;
     int m_userid;
     int m_frid;
-    PackType m_nType;
 }STRU_ADDFRIEND_RS;
 
 //更新在线状态

@@ -111,23 +111,6 @@ void QQMainDlg::AddMsg(char *szbuf, int mode)
             delete delItem;
             delItem = NULL;
         });
-        connect(item,&AddFriendItem::SIG_Accept,[=](AddFriendItem*delItem,char *szbuf)
-        {
-           m_tcp->SendData(szbuf,sizeof(szbuf));
-           auto ite = m_AddfriVec.begin();
-           while(ite!=m_AddfriVec.end())
-           {
-               if((*ite)->m_userid == delItem->m_userid)
-               {
-                   m_AddfriVec.erase(ite);
-                   break;
-               }
-           }
-           delItem->setVisible(false);
-           m_Msglayout->removeWidget(delItem);
-           delete delItem;
-           delItem = NULL;
-        });
     }
 }
 

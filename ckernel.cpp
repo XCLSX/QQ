@@ -132,11 +132,6 @@ void CKernel::slot_SearchFriendRs(char *szbuf, int nlen)
         item->InitInfo(&rs->m_userInfoArr[i]);
         dlg->AddFriWidget(item);
         dlg->vec_friend.push_back(item);
-        connect(item,&SearchFriendItem::SIG__Addfriend,[=](char *szbuf)
-        {
-            STRU_ADDFRIEND_RQ *rq = (STRU_ADDFRIEND_RQ*)szbuf;
-            m_tcp->SendData(szbuf,sizeof(szbuf));
-        });
         i++;
     }
 

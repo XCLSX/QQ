@@ -1,5 +1,6 @@
 #include "addfrienditem.h"
 #include "ui_addfrienditem.h"
+extern QMyTcpClient *m_tcp;
 
 AddFriendItem::AddFriendItem(QWidget *parent) :
     QWidget(parent),
@@ -33,5 +34,7 @@ void AddFriendItem::on_pb_accept_clicked()
     STRU_ADDFRIEND_RS rs;
     rs.m_frid = this->m_fri_id;
     rs.m_userid = m_userid;
-    Q_EMIT SIG_Accept(this,(char *)&rs);
+
+    m_tcp->SendData((char *)&rs,sizeof(rs));
+    Q_EMIT SIG_mCloseWidget(this);
 }

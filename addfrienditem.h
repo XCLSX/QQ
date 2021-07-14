@@ -22,7 +22,6 @@ public:
     int m_userid;
 signals:
     void SIG_mCloseWidget(AddFriendItem*);
-    void SIG_Accept(AddFriendItem*,char *);
 private slots:
     void on_pb_refuse_clicked();
 
