@@ -43,6 +43,8 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_FRIENDLIST_FRESH_RS - DEF_PACK_BASE] = slot_Fresh_FriListRs;
     NetPack[DEF_PACK_ADDFRIEND_RQ - DEF_PACK_BASE] = slot_AddfriendRq;
     NetPack[DEF_PACK_UPDATESTATUS - DEF_PACK_BASE] = slot_UpdateFriendStatus;
+    NetPack[DEF_PACK_SENDMSG_RQ - DEF_PACK_BASE] = slot_GetMsg;
+
 }
 ////发出请求包
 //注册请求
@@ -151,6 +153,11 @@ void CKernel::slot_AddfriendRq(char *szbuf, int len)
 void CKernel::slot_UpdateFriendStatus(char *szbuf, int nlen)
 {
     m_maindlg->UpdateFriendStatus(szbuf);
+}
+
+void CKernel::slot_GetMsg(char *szbuf, int nlen)
+{
+    m_maindlg->UpdateMsg(szbuf);
 }
 
 void CKernel::slot_Destroyapp()

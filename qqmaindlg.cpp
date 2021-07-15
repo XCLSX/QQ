@@ -59,6 +59,51 @@ void QQMainDlg::SetInfo(STRU_USER_INFO *info)
 
 }
 
+void QQMainDlg::UpdateMsg(char *szbuf)
+{
+    STRU_SENDMSG_RQ *rq = (STRU_SENDMSG_RQ*)szbuf;
+    auto mite = m_Msgls.begin();
+    while(mite!=m_Msgls.end())
+    {
+        if((*mite)->m_UserInfo.m_user_id == rq->m_userid)
+        {
+            //添加信息
+            (*mite)->m_chat->AddMsg(rq->msg);
+            (*mite)->SetCurrentMsg(rq->msg);
+
+            if((*mite)->m_chat->isHidden())
+                (*mite)->UpdateMsgNum();
+
+            (*mite)->setVisible(false);
+            m_Msglayout->removeWidget(*mite);
+            (*mite)->setVisible(true);
+            m_Msglayout->insertWidget(0,*mite);
+            return;
+        }
+        ++mite;
+    }
+    auto fite = m_Friendls.begin();
+    while(fite != m_Friendls.end())
+    {
+        if((*fite)->m_UserInfo.m_user_id == rq->m_userid)
+        {
+            (*fite)->m_chat->AddMsg(rq->msg);
+
+            UserItem *item = new UserItem;
+            item->SetInfo(&(*fite)->m_UserInfo,rq->m_userid);
+            item->SetChatDlg((*fite)->GetChatDlg());
+            item->num = (*fite)->num;
+            item->SetCurrentMsg(rq->msg);
+            if(item->m_chat->isHidden())
+                item->UpdateMsgNum();
+            m_Msgls.push_back(item);
+            m_Msglayout->insertWidget(0,item);
+            break;
+        }
+        ++fite;
+    }
+}
+
 
 
 void QQMainDlg::on_pb_Search_clicked()
@@ -84,30 +129,32 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
     {
         bool bflag = false;
         UserItem *pitem = (UserItem*)szbuf;
-        UserItem *item = new UserItem;
-        item->SetInfo(&pitem->m_UserInfo,pitem->m_userid);
-        item->SetChatDlg(pitem->GetChatDlg());
         auto ite = m_Msgls.begin();
         while(ite!=m_Msgls.end())
         {
-            if((*ite)->m_UserInfo.m_user_id == item->m_UserInfo.m_user_id)
+            if((*ite)->m_UserInfo.m_user_id == pitem->m_UserInfo.m_user_id)
             {
                 bflag = true;
                 break;
             }
             ++ite;
         }
-        m_Msgls.push_back(item);
+
         //曾经存在消息列表中
         if(bflag)
         {
-            item->setVisible(false);
-            m_Msglayout->removeWidget(item);
-            m_Msglayout->insertWidget(0,item);
+            (*ite)->setVisible(false);
+            m_Msglayout->removeWidget(*ite);
+            (*ite)->setVisible(true);
+            m_Msglayout->insertWidget(0,*ite);
         }
         else
         {
-
+            UserItem *item = new UserItem;
+            item->SetInfo(&pitem->m_UserInfo,pitem->m_userid);
+            item->SetChatDlg(pitem->GetChatDlg());
+            item->num = pitem->num;
+            m_Msgls.push_back(item);
             m_Msglayout->insertWidget(0,item);
         }
 

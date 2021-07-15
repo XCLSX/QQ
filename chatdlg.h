@@ -13,9 +13,10 @@ class ChatDlg : public QWidget
     Q_OBJECT
 
 public:
-    explicit ChatDlg(int,STRU_USER_INFO*,QWidget *parent = nullptr);
+    explicit ChatDlg(QWidget *parent = nullptr);
     ~ChatDlg();
-    void SetUserItem(char *);
+    void SetInfo(char *,int ,STRU_USER_INFO*);
+    void AddMsg(char *);
 signals:
     void SIG_ADDITEM(char*,int);
 private slots:

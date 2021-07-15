@@ -6,8 +6,9 @@ UserItem::UserItem(QWidget *parent) :
     ui(new Ui::UserItem)
 {
     ui->setupUi(this);
-    m_chat = new ChatDlg(m_userid,&m_UserInfo);
-    m_chat->SetUserItem((char *)this);
+    m_chat = new ChatDlg;
+
+
 }
 
 UserItem::~UserItem()
@@ -32,12 +33,16 @@ void UserItem::SetInfo(STRU_USER_INFO * info,int userid )
             ui->pb_icon->setIcon(bp);
         }
         this->repaint();
-
+        m_chat->SetInfo((char *)this,m_userid,info);
+        num  = new int;
+        *num = 0;
 }
 
 void UserItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     m_chat->show();
+    *num = 0;
+    ui->lb_num->setText("");
 
 }
 
@@ -49,4 +54,17 @@ ChatDlg *UserItem::GetChatDlg()
 void UserItem::SetChatDlg(ChatDlg *pChat)
 {
     m_chat = pChat;
+}
+
+void UserItem::UpdateMsgNum()
+{
+    (*num)++;
+    char str[4] = {0};
+    itoa(*num,str,10);
+    ui->lb_num->setText(QString(str));
+}
+
+void UserItem::SetCurrentMsg(char *msg)
+{
+    ui->lb_felling->setText(QString(msg));
 }

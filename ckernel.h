@@ -41,7 +41,7 @@ private slots:      //回复
     void slot_Fresh_FriListRs(char*,int);
     void slot_AddfriendRq(char *,int);
     void slot_UpdateFriendStatus(char *,int);
-
+    void slot_GetMsg(char *,int);
     void slot_Destroyapp();
 public:
     LoginDlg *m_logindlg;

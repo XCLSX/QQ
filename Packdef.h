@@ -36,6 +36,9 @@ typedef enum Net_PACK
 
     DEF_PACK_SENDMSG_RQ,                        //发送聊天信息请求
 
+    DEF_PACK_GET_OFF_FRIENDRQ,                  //获取离线好友请求
+    DEF_PACK_GETOFFMSG,                         //获取离线信息
+
 
     DEF_PACK_TEST,
 }Net_PACK;
@@ -236,6 +239,8 @@ typedef struct STRU_SENDMSG_RQ
     int m_Touserid;
     char msg[MAX_MGS_SIZE];
 }STRU_SENDMSG_RQ;
+
+
 #endif
 
 

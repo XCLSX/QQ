@@ -19,6 +19,9 @@ public:
     void mouseDoubleClickEvent(QMouseEvent *event);
     ChatDlg *GetChatDlg();
     void SetChatDlg(ChatDlg*);
+    void UpdateMsgNum();
+    void SetCurrentMsg(char *);
+    int *num;
 private slots:
 public:
     Ui::UserItem *ui;

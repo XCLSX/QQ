@@ -24,6 +24,7 @@ public:
     void AddUserItem(QWidget*item);
     void UpdateFriendStatus(char *);
     void SetInfo(STRU_USER_INFO* info);
+    void UpdateMsg(char *);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0);

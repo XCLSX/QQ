@@ -53,24 +53,18 @@
     <string notr="true">QWidget:hover{background-color: rgb(188, 188, 188);}
 </string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>1</x>
       <y>0</y>
-      <width>351</width>
-      <height>62</height>
+      <width>271</width>
+      <height>63</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>20</number>
-     </property>
-     <property name="leftMargin">
       <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>10</number>
      </property>
      <item>
       <widget class="QPushButton" name="pb_icon">
@@ -99,35 +93,62 @@
      </item>
      <item>
       <widget class="QWidget" name="widget_2" native="true">
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QLabel" name="lb_name">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>0</y>
-          <width>271</width>
-          <height>61</height>
+          <x>20</x>
+          <y>1</y>
+          <width>68</width>
+          <height>16</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="leftMargin">
-          <number>10</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="lb_name">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="lb_felling">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
        </widget>
+       <widget class="QLabel" name="lb_felling">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>34</y>
+          <width>68</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget_3" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>41</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>41</width>
+         <height>61</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="lb_num">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
