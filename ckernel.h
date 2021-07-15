@@ -48,7 +48,7 @@ public:
     QQMainDlg *m_maindlg;
     PFUN NetPack[DEF_PACK_COUNT];
     STRU_USER_INFO *m_userInfo;
-
+    QVBoxLayout *m_ChatLayout;
 };
 
 #endif // CKERNEL_H

@@ -3,9 +3,11 @@
 
 UserItem::UserItem(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::UserItem),m_iconid(0),m_userid(0)
+    ui(new Ui::UserItem)
 {
     ui->setupUi(this);
+    m_chat = new ChatDlg(m_userid,&m_UserInfo);
+    m_chat->SetUserItem((char *)this);
 }
 
 UserItem::~UserItem()
@@ -13,26 +15,38 @@ UserItem::~UserItem()
     delete ui;
 }
 
-void UserItem::SetInfo(STRU_USER_INFO * info )
+void UserItem::SetInfo(STRU_USER_INFO * info,int userid )
 {
-
-        m_iconid = info->m_icon_id;
-        m_userid = info->m_user_id;
-        status = info->m_status;
-        m_name = QString(info->m_userName);
-        m_feeling = QString(info->sz_feeling);
-        ui->lb_name->setText(m_name);
-        ui->lb_felling->setText(m_feeling);
-        if(status)
+        m_userid = userid;
+        m_UserInfo = *info;
+        ui->lb_name->setText(QString(info->m_userName));
+        ui->lb_felling->setText(QString(info->sz_feeling));
+        if(info->m_status)
         {
-            ui->pb_icon->setIcon(QIcon(QString(":/tx/%1.png").arg(m_iconid)));
+            ui->pb_icon->setIcon(QIcon(QString(":/tx/%1.png").arg(info->m_icon_id)));
         }
         else
         {
             QBitmap bp;
-            bp.load(QString(":/tx/%1.png").arg(m_iconid));
+            bp.load(QString(":/tx/%1.png").arg(info->m_icon_id));
             ui->pb_icon->setIcon(bp);
         }
         this->repaint();
 
+}
+
+void UserItem::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    m_chat->show();
+
+}
+
+ChatDlg *UserItem::GetChatDlg()
+{
+    return m_chat;
+}
+
+void UserItem::SetChatDlg(ChatDlg *pChat)
+{
+    m_chat = pChat;
 }

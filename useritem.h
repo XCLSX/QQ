@@ -2,6 +2,7 @@
 #define USERITEM_H
 
 #include <QWidget>
+#include<chatdlg.h>
 #include <Packdef.h>
 namespace Ui {
 class UserItem;
@@ -14,16 +15,17 @@ class UserItem : public QWidget
 public:
     explicit UserItem(QWidget *parent = nullptr);
     ~UserItem();
-    void SetInfo(STRU_USER_INFO*);
+    void SetInfo(STRU_USER_INFO*,int );
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    ChatDlg *GetChatDlg();
+    void SetChatDlg(ChatDlg*);
 private slots:
 public:
-    int m_mode;
     Ui::UserItem *ui;
-    int m_userid;
-    QString m_name;
-    QString m_feeling;
-    int status;
-    int m_iconid;
+    STRU_USER_INFO m_UserInfo;
+    int m_userid;   //自己id
+    ChatDlg *m_chat;
+
 
 };
 

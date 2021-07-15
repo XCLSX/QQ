@@ -34,8 +34,9 @@ void QQMainDlg::FreshFriendList(char *szbuf)
     while(rs->m_FriInfo[i].m_user_id!=0)
     {
         item = new UserItem;
-        item->SetInfo(&rs->m_FriInfo[i]);
-        m_FriendVec.push_back(item);
+        connect(item->GetChatDlg(),SIGNAL(SIG_ADDITEM(char*,int)),SLOT(slot_AddMsg(char*,int)));
+        item->SetInfo(&rs->m_FriInfo[i],m_userInfo->m_user_id);
+        m_Friendls.push_back(item);
         m_Frilayout->addWidget(item);
         i++;
     }
@@ -76,11 +77,39 @@ void QQMainDlg::AddUserItem(QWidget *item)
     m_Frilayout->addWidget(item);
 }
 
-void QQMainDlg::AddMsg(char *szbuf, int mode)
+void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
 {
     //聊天
     if(mode == 0)
     {
+        bool bflag = false;
+        UserItem *pitem = (UserItem*)szbuf;
+        UserItem *item = new UserItem;
+        item->SetInfo(&pitem->m_UserInfo,pitem->m_userid);
+        item->SetChatDlg(pitem->GetChatDlg());
+        auto ite = m_Msgls.begin();
+        while(ite!=m_Msgls.end())
+        {
+            if((*ite)->m_UserInfo.m_user_id == item->m_UserInfo.m_user_id)
+            {
+                bflag = true;
+                break;
+            }
+            ++ite;
+        }
+        m_Msgls.push_back(item);
+        //曾经存在消息列表中
+        if(bflag)
+        {
+            item->setVisible(false);
+            m_Msglayout->removeWidget(item);
+            m_Msglayout->insertWidget(0,item);
+        }
+        else
+        {
+
+            m_Msglayout->insertWidget(0,item);
+        }
 
     }//添加好友
     else if(mode == 1)
@@ -88,53 +117,89 @@ void QQMainDlg::AddMsg(char *szbuf, int mode)
         STRU_ADDFRIEND_RQ *rq = (STRU_ADDFRIEND_RQ*)szbuf;
         AddFriendItem *item = new AddFriendItem;
         item->SetInfo(&rq->m_UserInfo,rq->m_frid);
-        for(int i=0;i<m_AddfriVec.size();i++)
+        auto ite = m_Addfrils.begin();
+        while(ite!=m_Addfrils.end())
         {
-            if(m_AddfriVec[i]->m_userid == item->m_userid)
-                return;
+            if((*ite)->m_userid == item->m_userid)
+                return ;
+            ++ite;
         }
-        m_AddfriVec.push_back(item);
+        m_Addfrils.push_back(item);
         m_Msglayout->addWidget(item);
         connect(item,&AddFriendItem::SIG_mCloseWidget,[=](AddFriendItem*delItem)
         {
-            auto ite = m_AddfriVec.begin();
-            while(ite!=m_AddfriVec.end())
-            {
-                if((*ite)->m_userid == delItem->m_userid)
-                {
-                    m_AddfriVec.erase(ite);
-                    break;
-                }
-            }
-            delItem->setVisible(false);
-            m_Msglayout->removeWidget(delItem);
-            delete delItem;
-            delItem = NULL;
+           auto ite = m_Addfrils.begin();
+           while(ite!=m_Addfrils.end())
+           {
+               if((*ite)->m_userid == delItem->m_userid)
+               {
+                   m_Addfrils.erase(ite);
+                   break;
+               }
+               ++ite;
+           }
+           delItem->setVisible(false);
+           m_Msglayout->removeWidget(delItem);
+           delete delItem;
+           delItem = NULL;
         });
+//        m_Addfrils.push_back(item);
+//        m_Msglayout->addWidget(item);
+//        connect(item,&AddFriendItem::SIG_mCloseWidget,[=](AddFriendItem*delItem)
+//        {
+//            auto ite = m_Addfrils.begin();
+//            while(ite!=m_Addfrils.end())
+//            {
+//                if((*ite)->m_userid == delItem->m_userid)
+//                {
+//                    m_Addfrils.erase(ite);
+//                    break;
+//                }
+//            }
+//            delItem->setVisible(false);
+//            m_Msglayout->removeWidget(delItem);
+//            delete delItem;
+//            delItem = NULL;
+//        });
     }
 }
 
 void QQMainDlg::UpdateFriendStatus(char *szbuf)
 {
     STRU_UPDATE_STATUS *sus = (STRU_UPDATE_STATUS*)szbuf;
-    auto ite = m_FriendVec.begin();
-    while(ite!=m_FriendVec.end())
+    auto ite = m_Friendls.begin();
+    while(ite!=m_Friendls.end())
     {
-        if((*ite)->m_userid == sus->m_UserInfo.m_user_id)
+        //好友下线或上线更新头像
+        if((*ite)->m_UserInfo.m_user_id == sus->m_UserInfo.m_user_id)
         {
-            (*ite)->status = sus->m_UserInfo.m_status;
-            if((*ite)->status == 0)
-            {
+            UserItem *item = new UserItem;
 
+            item->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+            (*ite)->setVisible(false);
+            m_Frilayout->removeWidget(*ite);
+            delete *ite;
+            m_Friendls.erase(ite);
+            if(sus->m_UserInfo.m_status)
+            {
+                m_Frilayout->insertWidget(0,item);
             }
+            else
+                m_Frilayout->addWidget(item);
+            return ;
         }
-        else
-        {
-            UserItem *item;
-            item->SetInfo(&sus->m_UserInfo);
-            m_Frilayout->addWidget(item);
-        }
+
         ++ite;
     }
-}
+    //新加好友
+    UserItem *item = new UserItem;
+    item->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+    m_Friendls.push_back(item);
+    if(sus->m_UserInfo.m_status)
+    {
+        m_Frilayout->insertWidget(0,item);
+    }
+    else
+        m_Frilayout->addWidget(item);
 
+}

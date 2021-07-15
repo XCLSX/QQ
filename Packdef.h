@@ -34,6 +34,7 @@ typedef enum Net_PACK
 
     DEF_PACK_UPDATESTATUS,                      //更新用户状态
 
+    DEF_PACK_SENDMSG_RQ,                        //发送聊天信息请求
 
 
     DEF_PACK_TEST,
@@ -57,6 +58,7 @@ typedef enum Net_PACK
 #define MAX_PATH            (280 )
 #define MAX_SIZE            (60  )
 #define DEF_HOBBY_COUNT     (8  )
+#define MAX_MGS_SIZE        (2048)
 #define MAX_CONTENT_LEN     (4096 )
 
 
@@ -219,6 +221,21 @@ typedef struct STRU_TEST
     }
     PackType m_nType;
 }STRU_TEST;
+
+typedef struct STRU_SENDMSG_RQ
+{
+    STRU_SENDMSG_RQ()
+    {
+        m_nType = DEF_PACK_SENDMSG_RQ;
+        m_userid = 0;
+        m_Touserid = 0;
+        memset(msg,0,sizeof(msg));
+    }
+    PackType m_nType;
+    int m_userid;
+    int m_Touserid;
+    char msg[MAX_MGS_SIZE];
+}STRU_SENDMSG_RQ;
 #endif
 
 

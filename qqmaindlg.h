@@ -22,9 +22,11 @@ public:
     SearchFriendDlg *GetSearchDLg();
     void FreshFriendList(char *);
     void AddUserItem(QWidget*item);
-    void AddMsg(char *,int mode = 0);
     void UpdateFriendStatus(char *);
     void SetInfo(STRU_USER_INFO* info);
+public slots:
+
+    void slot_AddMsg(char *,int mode = 0);
 
 private slots:
 
@@ -42,9 +44,9 @@ private:
     STRU_USER_INFO* m_userInfo;
     //friend class CKernel;
 
-    vector<UserItem*> m_FriendVec;
-    vector<QWidget*> m_MsgVec;
-    vector<AddFriendItem*> m_AddfriVec;
+    list<UserItem*> m_Friendls;
+    list<UserItem*> m_Msgls;
+    list<AddFriendItem*> m_Addfrils;
 
     QVBoxLayout *m_Frilayout;
     QVBoxLayout *m_Msglayout;

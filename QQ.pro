@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     addfrienditem.cpp \
+    chatdlg.cpp \
     ckernel.cpp \
     logindlg.cpp \
     main.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 HEADERS += \
     Packdef.h \
     addfrienditem.h \
+    chatdlg.h \
     ckernel.h \
     logindlg.h \
     qqmaindlg.h \
@@ -39,6 +41,7 @@ HEADERS += \
 
 FORMS += \
     addfrienditem.ui \
+    chatdlg.ui \
     logindlg.ui \
     qqmaindlg.ui \
     searchfrienddlg.ui \
