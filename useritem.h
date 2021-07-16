@@ -21,6 +21,7 @@ public:
     void SetChatDlg(ChatDlg*);
     void UpdateMsgNum();
     void SetCurrentMsg(char *);
+    void ChangeIconColor(int status,int);
     int *num;
 private slots:
 public:

@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <useritem.h>
 #include <addfrienditem.h>
+#include <QCloseEvent>
 class CKernel;
 namespace Ui {
 class QQMainDlg;
@@ -25,6 +26,7 @@ public:
     void UpdateFriendStatus(char *);
     void SetInfo(STRU_USER_INFO* info);
     void UpdateMsg(char *);
+    void closeEvent(QCloseEvent *);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0);

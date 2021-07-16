@@ -68,3 +68,18 @@ void UserItem::SetCurrentMsg(char *msg)
 {
     ui->lb_felling->setText(QString(msg));
 }
+
+void UserItem::ChangeIconColor(int status,int icon_id)
+{
+    if(status)
+    {
+        ui->pb_icon->setIcon(QIcon(QString(":/tx/%1.png").arg(icon_id)));
+    }
+    else
+    {
+        QBitmap bp;
+        bp.load(QString(":/tx/%1.png").arg(icon_id));
+        ui->pb_icon->setIcon(bp);
+    }
+    this->repaint();
+}

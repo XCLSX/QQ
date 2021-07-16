@@ -1,7 +1,6 @@
 #include "ckernel.h"
 QMyTcpClient *m_tcp;
 
-
 CKernel *CKernel::GetInstance()
 {
     static CKernel ck;

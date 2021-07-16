@@ -104,6 +104,14 @@ void QQMainDlg::UpdateMsg(char *szbuf)
     }
 }
 
+void QQMainDlg::closeEvent(QCloseEvent *)
+{
+    STRU_OFFLINE_RQ rq;
+    rq.m_userid = m_userInfo->m_user_id;
+    m_tcp->SendData((char *)&rq,sizeof(rq));
+    exit(0);
+}
+
 
 
 void QQMainDlg::on_pb_Search_clicked()
@@ -213,40 +221,58 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
 
 void QQMainDlg::UpdateFriendStatus(char *szbuf)
 {
+    bool bFlag = false;
     STRU_UPDATE_STATUS *sus = (STRU_UPDATE_STATUS*)szbuf;
     auto ite = m_Friendls.begin();
     while(ite!=m_Friendls.end())
     {
-        //好友下线或上线更新头像
+        //好友更新信息
         if((*ite)->m_UserInfo.m_user_id == sus->m_UserInfo.m_user_id)
         {
-            UserItem *item = new UserItem;
-
-            item->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+            bFlag = true;
             (*ite)->setVisible(false);
             m_Frilayout->removeWidget(*ite);
-            delete *ite;
-            m_Friendls.erase(ite);
+            (*ite)->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+            (*ite)->setVisible(true);
+            if(sus->m_UserInfo.m_status)
+            {
+                m_Frilayout->insertWidget(0,*ite);
+            }
+            else
+                m_Frilayout->addWidget(*ite);
+            break ;
+        }
+
+        ++ite;
+    }
+    if(bFlag)
+    {
+        ite = m_Msgls.begin();
+        while(ite!=m_Msgls.end())
+        {
+            if((*ite)->m_UserInfo.m_user_id == sus->m_UserInfo.m_user_id)
+            {
+                (*ite)->setVisible(false);
+                m_Msglayout->removeWidget(*ite);
+                (*ite)->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+                (*ite)->setVisible(true);
+                m_Msglayout->addWidget(*ite);
+
+            }
+            ++ite;
+        }
+    }
+    else
+    {
+            //新加好友
+            UserItem *item = new UserItem;
+            item->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
+            m_Friendls.push_back(item);
             if(sus->m_UserInfo.m_status)
             {
                 m_Frilayout->insertWidget(0,item);
             }
             else
                 m_Frilayout->addWidget(item);
-            return ;
-        }
-
-        ++ite;
     }
-    //新加好友
-    UserItem *item = new UserItem;
-    item->SetInfo(&sus->m_UserInfo,m_userInfo->m_user_id);
-    m_Friendls.push_back(item);
-    if(sus->m_UserInfo.m_status)
-    {
-        m_Frilayout->insertWidget(0,item);
-    }
-    else
-        m_Frilayout->addWidget(item);
-
 }
