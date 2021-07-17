@@ -112,6 +112,20 @@ void QQMainDlg::closeEvent(QCloseEvent *)
     exit(0);
 }
 
+UserItem *QQMainDlg::GetFriendItem(int fid)
+{
+    auto ite = m_Friendls.begin();
+    while(ite!=m_Friendls.end())
+    {
+        if((*ite)->m_UserInfo.m_user_id == fid)
+        {
+            return *ite;
+        }
+        ite++;
+    }
+    return NULL;
+}
+
 
 
 void QQMainDlg::on_pb_Search_clicked()

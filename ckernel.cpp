@@ -43,6 +43,8 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_ADDFRIEND_RQ - DEF_PACK_BASE] = slot_AddfriendRq;
     NetPack[DEF_PACK_UPDATESTATUS - DEF_PACK_BASE] = slot_UpdateFriendStatus;
     NetPack[DEF_PACK_SENDMSG_RQ - DEF_PACK_BASE] = slot_GetMsg;
+    NetPack[DEF_PACK_UPLOAD_RS - DEF_PACK_BASE] = slot_UploadRs;
+
 
 }
 ////发出请求包
@@ -157,6 +159,16 @@ void CKernel::slot_UpdateFriendStatus(char *szbuf, int nlen)
 void CKernel::slot_GetMsg(char *szbuf, int nlen)
 {
     m_maindlg->UpdateMsg(szbuf);
+}
+
+void CKernel::slot_UploadRs(char *szbuf, int nlen)
+{
+    STRU_UPLOAD_RS *rs = (STRU_UPLOAD_RS*)rs;
+    UserItem *item = m_maindlg->GetFriendItem(rs->m_friendId);
+    if(item!=NULL)
+    {
+        item->GetChatDlg()->SendFile(szbuf);
+    }
 }
 
 void CKernel::slot_Destroyapp()

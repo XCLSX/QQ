@@ -26,7 +26,8 @@ SOURCES += \
     qqmaindlg.cpp \
     searchfrienddlg.cpp \
     searchfrienditem.cpp \
-    useritem.cpp
+    useritem.cpp \
+    worker.cpp
 
 HEADERS += \
     Packdef.h \
@@ -37,7 +38,8 @@ HEADERS += \
     qqmaindlg.h \
     searchfrienddlg.h \
     searchfrienditem.h \
-    useritem.h
+    useritem.h \
+    worker.h
 
 FORMS += \
     addfrienditem.ui \

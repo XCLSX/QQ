@@ -1,5 +1,6 @@
 #include "chatdlg.h"
 #include "ui_chatdlg.h"
+#include <worker.h>
 #define MD5_KEY 1234
 extern QMyTcpClient *m_tcp;
 
@@ -45,6 +46,37 @@ void ChatDlg::AddMsg(char *msg)
 
 }
 
+void ChatDlg::SendFile(char *szbuf)
+{
+    STRU_UPLOAD_RS *rs = (STRU_UPLOAD_RS*)szbuf;
+    if(rs->m_nResult == 0)
+    {
+
+    }
+    else
+    {
+        QString md5str = QString(rs->m_szFileMD5);
+        if(map_Md5ToFile.find(md5str)!=map_Md5ToFile.end())
+        {
+            STRU_FILE_INFO *info = map_Md5ToFile[md5str];
+            Worker *work = new Worker;
+            work->moveToThread(&myThread);
+            connect(this,SIGNAL(SIG_THREAD_WORK(char*,int,int)),work,SLOT(dowork(char*,int,int)));
+            connect(work,&Worker::SIG_TASK_OVER,[=]()
+            {
+                info->pFile->close();
+                //去除该节点
+                map_Md5ToFile.erase( info->fileMd5 );
+                delete info;
+                QMessageBox::about( NULL , "提示","发送完成" );
+
+            });
+            myThread.start();
+            Q_EMIT SIG_THREAD_WORK((char*)info,m_userid,m_charUserInfo->m_user_id);
+        }
+    }
+}
+
 void ChatDlg::on_pb_send_clicked()
 {
     QString str = ui->te_msg->toPlainText();
@@ -63,7 +95,7 @@ void ChatDlg::on_pb_send_clicked()
 void ChatDlg::on_pb_sendFile_clicked()
 {
     ui->sa_File->setMaximumWidth(100);
-    QString filePath = QFileDialog::getOpenFileName(this,QString("选择发送文件"),"C:");
+    QString filePath = QFileDialog::getOpenFileName(this,QString("选择发送文件"));
     if(!filePath.remove(" ").isEmpty())
     {
         qDebug()<<filePath;
@@ -93,3 +125,5 @@ void ChatDlg::on_pb_sendFile_clicked()
 
     }
 }
+
+

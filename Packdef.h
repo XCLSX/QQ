@@ -111,6 +111,7 @@ typedef int PackType;
                 filePath = "";
                 fileName = "";
                 pFile = NULL;
+                bFLag = true;
             }
             QString fileMd5;
             int64_t filePos;
@@ -118,6 +119,7 @@ typedef int PackType;
             QString filePath;
             QString fileName;
             QFile * pFile;
+            bool bFLag;
 
         }STRU_FILE_INFO;
 //注册

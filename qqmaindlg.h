@@ -27,6 +27,7 @@ public:
     void SetInfo(STRU_USER_INFO* info);
     void UpdateMsg(char *);
     void closeEvent(QCloseEvent *);
+    UserItem *GetFriendItem(int fid);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0);
