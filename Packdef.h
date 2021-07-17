@@ -313,10 +313,10 @@ typedef struct STRU_UPLOAD_RS
         m_nResult = 0;
     }
     PackType m_nType; //包类型
+    int m_nResult;
     int m_UserId; //用于查数据库, 获取用户名字, 拼接路径
     int m_friendId; //对方的id
     char m_szFileMD5[MAX_SIZE];
-    int m_nResult;
 }STRU_UPLOAD_RS;
 
 //文件块请求

@@ -28,6 +28,8 @@ private slots:
     void on_pb_send_clicked();
 
     void on_pb_sendFile_clicked();
+    void on_pushButton_clicked();
+
 private:
     Ui::ChatDlg *ui;
     int m_userid;

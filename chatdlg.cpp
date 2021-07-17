@@ -59,20 +59,24 @@ void ChatDlg::SendFile(char *szbuf)
         if(map_Md5ToFile.find(md5str)!=map_Md5ToFile.end())
         {
             STRU_FILE_INFO *info = map_Md5ToFile[md5str];
-            Worker *work = new Worker;
-            work->moveToThread(&myThread);
-            connect(this,SIGNAL(SIG_THREAD_WORK(char*,int,int)),work,SLOT(dowork(char*,int,int)));
-            connect(work,&Worker::SIG_TASK_OVER,[=]()
+            info->pFile = new QFile(info->filePath);
+            if(info->pFile->open(QIODevice::ReadOnly ))
             {
-                info->pFile->close();
-                //去除该节点
-                map_Md5ToFile.erase( info->fileMd5 );
-                delete info;
-                QMessageBox::about( NULL , "提示","发送完成" );
+                Worker *work = new Worker;
+                work->moveToThread(&myThread);
+                connect(this,SIGNAL(SIG_THREAD_WORK(char*,int,int)),work,SLOT(dowork(char*,int,int)));
+                connect(work,&Worker::SIG_TASK_OVER,[=]()
+                {
+                    info->pFile->close();
+                    //去除该节点
+                    map_Md5ToFile.erase( info->fileMd5 );
+                    delete info;
+                    //QMessageBox::about( NULL , "提示","发送完成" );
 
-            });
-            myThread.start();
-            Q_EMIT SIG_THREAD_WORK((char*)info,m_userid,m_charUserInfo->m_user_id);
+                });
+                myThread.start();
+                Q_EMIT SIG_THREAD_WORK((char*)info,m_userid,m_charUserInfo->m_user_id);
+            }
         }
     }
 }
@@ -127,3 +131,38 @@ void ChatDlg::on_pb_sendFile_clicked()
 }
 
 
+
+void ChatDlg::on_pushButton_clicked()
+{
+    ui->sa_File->setMaximumWidth(100);
+    QString filePath = "C:/Users/44420/Desktop/4..暗红色中英文(1).docx";
+    if(!filePath.remove(" ").isEmpty())
+    {
+        qDebug()<<filePath;
+        QFileInfo fileInfo(filePath);
+        string fileName = fileInfo.fileName().toStdString();
+        QByteArray resMd5 = GetMD5(fileInfo.fileName() + QTime::currentTime().toString("hhmmss"));
+        STRU_UPLOAD_RQ rq;
+        rq.m_friendId = this->m_charUserInfo->m_user_id;
+        rq.m_nFileSize = fileInfo.size();
+        memcpy(rq.m_szFileMD5,resMd5.data(),resMd5.size());
+        rq.m_UserId = this->m_userid;
+        strcpy(rq.m_szFileName , fileName.c_str());
+        //发送文件头
+        m_tcp->SendData((char *)&rq,sizeof(rq));
+        //录入映射
+        string strMD5 = rq.m_szFileMD5;
+        QString MD5 = QString::fromStdString( strMD5 );
+
+        STRU_FILE_INFO * pInfo = new STRU_FILE_INFO;
+        pInfo->fileMd5 = MD5 ;
+        pInfo->fileName = fileInfo.fileName();
+        pInfo->filePath = filePath;
+        pInfo->filePos = 0;
+        pInfo->fileSize = rq.m_nFileSize;
+        pInfo->pFile = NULL;
+
+        map_Md5ToFile[ MD5 ] = pInfo;
+
+    }
+}

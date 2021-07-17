@@ -25,7 +25,10 @@ void Worker::dowork(char *szbuf,int m_userid,int m_frid)
         m_tcp->SendData( (char*)&rq , sizeof(rq) );
 
         if( info->filePos >= info->fileSize )
-            Q_EMIT SIG_TASK_OVER();
+            {
+                 Q_EMIT SIG_TASK_OVER();
+                return ;
+            }
 
     }
 

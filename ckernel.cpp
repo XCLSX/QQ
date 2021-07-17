@@ -163,7 +163,7 @@ void CKernel::slot_GetMsg(char *szbuf, int nlen)
 
 void CKernel::slot_UploadRs(char *szbuf, int nlen)
 {
-    STRU_UPLOAD_RS *rs = (STRU_UPLOAD_RS*)rs;
+    STRU_UPLOAD_RS *rs = (STRU_UPLOAD_RS*)szbuf;
     UserItem *item = m_maindlg->GetFriendItem(rs->m_friendId);
     if(item!=NULL)
     {
