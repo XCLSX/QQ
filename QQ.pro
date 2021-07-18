@@ -21,6 +21,7 @@ SOURCES += \
     addfrienditem.cpp \
     chatdlg.cpp \
     ckernel.cpp \
+    fileitem.cpp \
     logindlg.cpp \
     main.cpp \
     qqmaindlg.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     addfrienditem.h \
     chatdlg.h \
     ckernel.h \
+    fileitem.h \
     logindlg.h \
     qqmaindlg.h \
     searchfrienddlg.h \
@@ -44,6 +46,7 @@ HEADERS += \
 FORMS += \
     addfrienditem.ui \
     chatdlg.ui \
+    fileitem.ui \
     logindlg.ui \
     qqmaindlg.ui \
     searchfrienddlg.ui \

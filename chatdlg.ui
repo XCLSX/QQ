@@ -72,7 +72,7 @@
        <height>571</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -92,7 +92,7 @@
        <widget class="QTextBrowser" name="tb_chat">
         <property name="minimumSize">
          <size>
-          <width>541</width>
+          <width>401</width>
           <height>571</height>
          </size>
         </property>
@@ -120,7 +120,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>100</width>
+           <width>245</width>
            <height>554</height>
           </rect>
          </property>
@@ -144,8 +144,14 @@
            <widget class="QWidget" name="wid_file" native="true">
             <property name="minimumSize">
              <size>
-              <width>100</width>
+              <width>245</width>
               <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>249</width>
+              <height>16777215</height>
              </size>
             </property>
            </widget>
@@ -201,6 +207,19 @@
       <property name="geometry">
        <rect>
         <x>190</x>
+        <y>10</y>
+        <width>93</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>PushButton</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
         <y>10</y>
         <width>93</width>
         <height>28</height>

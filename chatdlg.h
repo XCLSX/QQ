@@ -5,6 +5,10 @@
 #include <Packdef.h>
 #include <QFileDialog>
 #include <QThread>
+#include <QVBoxLayout>
+#include <fileitem.h>
+//#include <mythread.h>
+#include <mutex>
 namespace Ui {
 
 
@@ -21,22 +25,31 @@ public:
     void SetInfo(char *,int ,STRU_USER_INFO*);
     void AddMsg(char *);
     void SendFile(char *);
+   // static unsigned __stdcall DoTest(char *szbuf,int m_userid,int m_frid);
+
 signals:
     void SIG_ADDITEM(char*,int);
-    void SIG_THREAD_WORK(char *,int,int);
+    void SIG_THREAD_WORK(STRU_FILE_INFO *,int,int);
 private slots:
     void on_pb_send_clicked();
 
     void on_pb_sendFile_clicked();
     void on_pushButton_clicked();
+    void slot_FileSendSuss(STRU_FILE_INFO*info);
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::ChatDlg *ui;
+    list<FileItem*> m_filels;
     int m_userid;
     STRU_USER_INFO* m_charUserInfo;
     char *m_UserItem;
     map<QString,STRU_FILE_INFO*> map_Md5ToFile;
-    QThread myThread;
+    map<QString,QThread*> map_Md5Tothread;
+    QVBoxLayout *m_layout;
+    int fileTask_num;
+    mutex mtx;
 };
 
 #endif // CHATDLG_H
