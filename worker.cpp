@@ -16,7 +16,7 @@ void Worker::slot_dowork(STRU_FILE_INFO *szbuf,int m_userid,int m_frid)
     rq.m_friendId = m_frid;
     while(1)
     {
-s
+
         //mx.lock();
         int res  = info->pFile->read( rq.m_szFileContent ,MAX_CONTENT_LEN );
         strcpy_s( rq.m_szFileMD5 , MAX_PATH , info->fileMd5.toStdString().c_str() );
