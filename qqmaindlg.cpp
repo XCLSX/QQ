@@ -34,7 +34,7 @@ void QQMainDlg::FreshFriendList(char *szbuf)
     while(rs->m_FriInfo[i].m_user_id!=0)
     {
         item = new UserItem;
-        connect(item->GetChatDlg(),SIGNAL(SIG_ADDITEM(char*,int)),SLOT(slot_AddMsg(char*,int)));
+        connect(item->GetChatDlg(),SIGNAL(SIG_ADDITEM(char*,int,QString)),SLOT(slot_AddMsg(char*,int,QString)));
         item->SetInfo(&rs->m_FriInfo[i],m_userInfo->m_user_id);
         m_Friendls.push_back(item);
         m_Frilayout->addWidget(item);
@@ -58,7 +58,7 @@ void QQMainDlg::SetInfo(STRU_USER_INFO *info)
 
 
 }
-
+//更新好友发来的最新消息并更新计数
 void QQMainDlg::UpdateMsg(char *szbuf)
 {
     STRU_SENDMSG_RQ *rq = (STRU_SENDMSG_RQ*)szbuf;
@@ -103,7 +103,7 @@ void QQMainDlg::UpdateMsg(char *szbuf)
         ++fite;
     }
 }
-
+//关闭程序发送下线包
 void QQMainDlg::closeEvent(QCloseEvent *)
 {
     STRU_OFFLINE_RQ rq;
@@ -125,7 +125,7 @@ UserItem *QQMainDlg::GetFriendItem(int fid)
     }
     return NULL;
 }
-
+//收到接收文件请求
 void QQMainDlg::AcceptFile(char *szbuf)
 {
     STRU_UPLOAD_RQ *rq = (STRU_UPLOAD_RQ*)szbuf;
@@ -167,7 +167,7 @@ void QQMainDlg::AcceptFile(char *szbuf)
     m_dlg->AcceptFile(szbuf);
 
 }
-
+//接收文件
 void QQMainDlg::GetFile(char *szbuf)
 {
     STRU_FILEBLOCK_RQ *rq = (STRU_FILEBLOCK_RQ*)szbuf;
@@ -235,7 +235,7 @@ void QQMainDlg::AddUserItem(QWidget *item)
     m_Frilayout->addWidget(item);
 }
 
-void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
+void QQMainDlg::slot_AddMsg(char *szbuf, int mode,QString str)
 {
     //聊天
     if(mode == 0)
@@ -244,10 +244,13 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
         auto ite = m_Msgls.begin();
         while(ite!=m_Msgls.end())
         {
+            //曾经存在消息列表中
             if((*ite)->m_UserInfo.m_user_id == pitem->m_UserInfo.m_user_id)
             {
                 (*ite)->setVisible(false);
                 m_Msglayout->removeWidget(*ite);
+                char *szbuf = (char *)QString("我:"+str).toStdString().c_str();
+                (*ite)->SetCurrentMsg(szbuf);
                 (*ite)->setVisible(true);
                 m_Msglayout->insertWidget(0,*ite);
                 return;
@@ -255,12 +258,31 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
             ++ite;
         }
 
-        //曾经存在消息列表中
 
 
             UserItem *item = pitem->m_Copy();
+            char *szbuf = (char *)QString("我:"+str).toStdString().c_str();
+            item->SetCurrentMsg(szbuf);
             m_Msgls.push_back(item);
             m_Msglayout->insertWidget(0,item);
+
+            //在消息列表清除槽函数
+            connect(item,&UserItem::SIG_DelMsg,[=](int del_userid)
+            {
+                auto ite = m_Msgls.begin();
+                while(ite!=m_Msgls.end())
+                {
+                    if((*ite)->m_UserInfo.m_user_id == del_userid)
+                    {
+                        (*ite)->setVisible(false);
+                        m_Msglayout->removeWidget(*ite);
+                        delete *ite;
+                        m_Msgls.erase(ite);
+                        return ;
+                    }
+                    ++ite;
+                }
+            });
 
 
     }//添加好友

@@ -10,7 +10,6 @@ UserItem::UserItem(QWidget *parent) :
     m_UserMenu = new QMenu;
     m_UserMenu->addAction("查看好友资料");
     m_UserMenu->addAction("删除好友");
-    m_UserMenu->addAction("从会话列表清除");
     connect(m_UserMenu,SIGNAL(triggered(QAction*)),this,SLOT(slot_DealMenu(QAction*)));
 
 
@@ -108,6 +107,8 @@ UserItem *UserItem::m_Copy()
     item->m_chat = this->m_chat;
     item->m_userid = this->m_userid;
     item->m_UserInfo = this->m_UserInfo;
+    item->m_UserMenu->addAction("从会话列表清除");
+
     if(item->m_UserInfo.m_status)
     {
         item->ui->pb_icon->setIcon(QIcon(QString(":/tx/%1.png").arg(item->m_UserInfo.m_icon_id)));
@@ -139,7 +140,7 @@ void UserItem::slot_DealMenu(QAction * action)
     }
     else if(action->text() == "从会话列表清除")
     {
-
+        SIG_DelMsg(m_UserInfo.m_user_id);
     }
 
 }

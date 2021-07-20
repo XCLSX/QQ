@@ -27,6 +27,8 @@ public:
     void mousePressEvent(QMouseEvent*event);
     UserItem *m_Copy();
     int *num;
+signals:
+    void SIG_DelMsg(int);
 private slots:
     void slot_DealMenu(QAction*);
 public:

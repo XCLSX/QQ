@@ -155,6 +155,7 @@ void ChatDlg::GetFile(char *szbuf)
        if(map_Md5ToFile.find(Md5) != map_Md5ToFile.end())
        {
            STRU_FILE_INFO*info = map_Md5ToFile[Md5];
+           //启动线程接收文件
           Q_EMIT SIG_WORK_GETFILE(info,szbuf);
        }
 }
@@ -173,7 +174,7 @@ void ChatDlg::on_pb_send_clicked()
     rq.m_userid = this->m_userid;
     rq.m_Touserid = m_charUserInfo->m_user_id;
     m_tcp->SendData((char *)&rq,sizeof(rq));
-    Q_EMIT SIG_ADDITEM(m_UserItem,0);
+    Q_EMIT SIG_ADDITEM(m_UserItem,0,str);
 }
 
 void ChatDlg::on_pb_sendFile_clicked()

@@ -33,11 +33,11 @@ public:
     void DelFriend(char *);
 public slots:
 
-    void slot_AddMsg(char *,int mode = 0);
+    void slot_AddMsg(char *,int mode = 0,QString str = "");
 
 private slots:
 
-    void slot_UpdateMsgLayout(UserItem*,char* );
+    void slot_UpdateMsgLayout(UserItem*,char*);
     void on_pb_Search_clicked();
 
     void on_pb_icon_clicked();

@@ -28,7 +28,7 @@ public:
     void AcceptFile(char *);
     void GetFile(char *);
 signals:
-    void SIG_ADDITEM(char*,int);
+    void SIG_ADDITEM(char*,int,QString str);
     void SIG_THREAD_WORK(STRU_FILE_INFO *,int,int);
     void SIG_VALCHANGE(int);
     void SIG_WORK_GETFILE(STRU_FILE_INFO*,char *);
