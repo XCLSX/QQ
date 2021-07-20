@@ -1,12 +1,17 @@
 #include "useritem.h"
 #include "ui_useritem.h"
-
+extern QMyTcpClient *m_tcp;
 UserItem::UserItem(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::UserItem)
 {
     ui->setupUi(this);
     m_chat = new ChatDlg;
+    m_UserMenu = new QMenu;
+    m_UserMenu->addAction("查看好友资料");
+    m_UserMenu->addAction("删除好友");
+    m_UserMenu->addAction("从会话列表清除");
+    connect(m_UserMenu,SIGNAL(triggered(QAction*)),this,SLOT(slot_DealMenu(QAction*)));
 
 
 }
@@ -82,4 +87,59 @@ void UserItem::ChangeIconColor(int status,int icon_id)
         ui->pb_icon->setIcon(bp);
     }
     this->repaint();
+}
+
+void UserItem::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::RightButton&&m_UserMenu)
+    {
+        QPoint p;
+        p.setX(QCursor::pos().x());
+        p.setY(QCursor::pos().y()-m_UserMenu->sizeHint().height());
+        m_UserMenu->exec(p);
+        qDebug()<<"right";
+    }
+}
+
+UserItem *UserItem::m_Copy()
+{
+    UserItem *item = new UserItem;
+
+    item->m_chat = this->m_chat;
+    item->m_userid = this->m_userid;
+    item->m_UserInfo = this->m_UserInfo;
+    if(item->m_UserInfo.m_status)
+    {
+        item->ui->pb_icon->setIcon(QIcon(QString(":/tx/%1.png").arg(item->m_UserInfo.m_icon_id)));
+    }
+    else
+    {
+        QBitmap bp;
+        bp.load(QString(":/tx/%1.png").arg(item->m_UserInfo.m_icon_id));
+        item->ui->pb_icon->setIcon(bp);
+    }
+    item->repaint();
+    item->ui->lb_name->setText(item->m_UserInfo.m_userName);
+    item->num = this->num;
+    return item;
+}
+
+void UserItem::slot_DealMenu(QAction * action)
+{
+    if(action->text()=="查看好友资料")
+    {
+
+    }
+    else if(action->text() == "删除好友")
+    {
+        STRU_DELFRIEND_RQ rq;
+        rq.m_userid = m_userid;
+        rq.m_frid = m_UserInfo.m_user_id;
+        m_tcp->SendData((char *)&rq,sizeof(rq));
+    }
+    else if(action->text() == "从会话列表清除")
+    {
+
+    }
+
 }

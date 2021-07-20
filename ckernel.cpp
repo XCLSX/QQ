@@ -44,6 +44,10 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_UPDATESTATUS - DEF_PACK_BASE] = slot_UpdateFriendStatus;
     NetPack[DEF_PACK_SENDMSG_RQ - DEF_PACK_BASE] = slot_GetMsg;
     NetPack[DEF_PACK_UPLOAD_RS - DEF_PACK_BASE] = slot_UploadRs;
+    NetPack[DEF_PACK_UPLOAD_RQ - DEF_PACK_BASE] = slot_AcceptFile;
+    NetPack[DEF_PACK_FILEBLOCK_RQ - DEF_PACK_BASE] = slot_GetFile;
+    NetPack[DEF_PACK_DEL_FRIEND_RS - DEF_PACK_BASE] = slot_DelFriend;
+
 
 
 }
@@ -186,4 +190,19 @@ void CKernel::slot_Destroyapp()
 
     }
     exit(0);
+}
+
+void CKernel::slot_AcceptFile(char *szbuf, int nlen)
+{
+    m_maindlg->AcceptFile(szbuf);
+}
+
+void CKernel::slot_GetFile(char *szbuf, int nlen)
+{
+    m_maindlg->GetFile(szbuf);
+}
+
+void CKernel::slot_DelFriend(char *szbuf, int nlen)
+{
+    m_maindlg->DelFriend(szbuf);
 }

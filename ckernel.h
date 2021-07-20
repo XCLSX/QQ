@@ -44,6 +44,9 @@ private slots:      //回复
     void slot_GetMsg(char *,int);
     void slot_UploadRs(char *,int);
     void slot_Destroyapp();
+    void slot_AcceptFile(char *,int);
+    void slot_GetFile(char *,int);
+    void slot_DelFriend(char *,int);
 public:
     LoginDlg *m_logindlg;
     QQMainDlg *m_maindlg;

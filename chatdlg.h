@@ -25,18 +25,19 @@ public:
     void SetInfo(char *,int ,STRU_USER_INFO*);
     void AddMsg(char *);
     void SendFile(char *);
-   // static unsigned __stdcall DoTest(char *szbuf,int m_userid,int m_frid);
-
+    void AcceptFile(char *);
+    void GetFile(char *);
 signals:
     void SIG_ADDITEM(char*,int);
     void SIG_THREAD_WORK(STRU_FILE_INFO *,int,int);
+    void SIG_VALCHANGE(int);
+    void SIG_WORK_GETFILE(STRU_FILE_INFO*,char *);
 private slots:
     void on_pb_send_clicked();
 
     void on_pb_sendFile_clicked();
     void on_pushButton_clicked();
     void slot_FileSendSuss(STRU_FILE_INFO*info);
-
     void on_pushButton_2_clicked();
 
 private:

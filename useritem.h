@@ -4,6 +4,8 @@
 #include <QWidget>
 #include<chatdlg.h>
 #include <Packdef.h>
+#include <QMouseEvent>
+#include <QMenu>
 namespace Ui {
 class UserItem;
 }
@@ -22,13 +24,17 @@ public:
     void UpdateMsgNum();
     void SetCurrentMsg(char *);
     void ChangeIconColor(int status,int);
+    void mousePressEvent(QMouseEvent*event);
+    UserItem *m_Copy();
     int *num;
 private slots:
+    void slot_DealMenu(QAction*);
 public:
     Ui::UserItem *ui;
     STRU_USER_INFO m_UserInfo;
     int m_userid;   //自己id
     ChatDlg *m_chat;
+    QMenu *m_UserMenu;
 
 
 };

@@ -28,13 +28,16 @@ public:
     void UpdateMsg(char *);
     void closeEvent(QCloseEvent *);
     UserItem *GetFriendItem(int fid);
+    void AcceptFile(char *);
+    void GetFile(char *);
+    void DelFriend(char *);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0);
 
 private slots:
 
-
+    void slot_UpdateMsgLayout(UserItem*,char* );
     void on_pb_Search_clicked();
 
     void on_pb_icon_clicked();

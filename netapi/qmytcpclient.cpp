@@ -35,8 +35,13 @@ void QMyTcpClient::UnInitNetWork()
 
 int QMyTcpClient::SendData(char* szbuf,int nLen)
 {
+    lock.lock();
     if( IsConnected() )
-        return m_pTcp->SendData(szbuf,nLen);
+    {
+        int res = m_pTcp->SendData(szbuf,nLen);
+        lock.unlock();
+        return res;
+    }
     else
     {
         m_pTcp->UnInitNetWork( );
@@ -44,10 +49,13 @@ int QMyTcpClient::SendData(char* szbuf,int nLen)
         m_pTcp = new TCPNet(this);
         if( this->InitNetWork(m_szBufIP , m_port) )
         {
-            return m_pTcp->SendData(szbuf,nLen);
+            int res = m_pTcp->SendData(szbuf,nLen);
+            lock.unlock();
+            return res;
         }
         else
         {
+            lock.unlock();
             return -1;
         }
     }

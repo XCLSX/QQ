@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include"TCPNet.h"
-
+#include <mutex>
+using namespace std;
 #define DEF_SERVER_IP  "192.168.19.129"
 #define DEF_TCP_PORT   8000
 class QMyTcpClient : public QObject,public ITcpMediator
@@ -28,6 +29,7 @@ public:
     TCPNet *m_pTcp;
     char  m_szBufIP[50];
     unsigned short m_port ;
+    mutex lock;
 };
 
 #endif // QTCPCLIENT_H

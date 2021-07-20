@@ -51,6 +51,8 @@ void ChatDlg::AddMsg(char *msg)
 
 void ChatDlg::SendFile(char *szbuf)
 {
+    qDebug()<<GetCurrentThreadId();
+
     STRU_UPLOAD_RS *rs = (STRU_UPLOAD_RS*)szbuf;
     if(rs->m_nResult == 0)
     {
@@ -65,9 +67,9 @@ void ChatDlg::SendFile(char *szbuf)
         {
             STRU_FILE_INFO *info = map_Md5ToFile[md5str];
 
-            //mtx.lock();
+            mtx.lock();
             fileTask_num++;
-           // mtx.unlock();
+            mtx.unlock();
 
             //布局界面
             ui->sa_File->setMaximumWidth(250);
@@ -83,7 +85,10 @@ void ChatDlg::SendFile(char *szbuf)
                 work->moveToThread(m_thread);
                 map_Md5Tothread[md5str] = m_thread;
                 m_fileItem->SetThread(m_thread);
-                connect(this,SIGNAL(SIG_THREAD_WORK(STRU_FILE_INFO*,int,int)),work,SLOT(slot_dowork(STRU_FILE_INFO*,int,int)));
+                connect(m_fileItem,&FileItem::SIG_PAUSE,[=](){
+                    work->slot_pause();
+                });
+                connect(this,SIGNAL(SIG_THREAD_WORK(STRU_FILE_INFO*,int,int)),work,SLOT(slot_SendFile(STRU_FILE_INFO*,int,int)));
                 connect(work,SIGNAL(SIG_VALUE_CHANGE(int)),m_fileItem,SLOT(slot_ChangeProcessBar(int)));
                 connect(work,SIGNAL(SIG_TASK_OVER(STRU_FILE_INFO*)),this,SLOT(slot_FileSendSuss(STRU_FILE_INFO*)));
 
@@ -92,6 +97,66 @@ void ChatDlg::SendFile(char *szbuf)
             }
         }
     }
+
+    //添加item到MSG
+    //auto ite = m_
+}
+
+void ChatDlg::AcceptFile(char *szbuf)
+{
+    STRU_UPLOAD_RQ *rq = (STRU_UPLOAD_RQ*)szbuf;
+    FileItem *item = new FileItem(rq->m_szFileName,1);
+    m_filels.push_back(item);
+    STRU_FILE_INFO *info = new STRU_FILE_INFO;
+    info->fileMd5 = rq->m_szFileMD5;
+    info->fileName = rq->m_szFileName;
+    info->fileSize = rq->m_nFileSize;
+    info->filePos = 0;
+    info->pFile = NULL;
+    info->filePath = "";
+    string strMd5 = rq->m_szFileMD5;
+    QString md5Res = QString::fromStdString(strMd5);
+    map_Md5ToFile[md5Res] = info;
+    ui->sa_File->setMaximumWidth(250);
+    m_layout->addWidget(item);
+    Worker *work = new Worker;
+    QThread *tid = new QThread;
+    map_Md5Tothread[md5Res] = tid;
+    item->SetThread(tid);
+    work->moveToThread(tid);
+    tid->start();
+    connect(this,&ChatDlg::SIG_WORK_GETFILE,work,&Worker::slot_GetFIle);
+    connect(item,&FileItem::SIG_ACCEPT,[=]()
+            {
+            this->mtx.lock();
+            fileTask_num++;
+            this->mtx.unlock();
+            STRU_UPLOAD_RS rs;
+            rs.m_friendId = rq->m_friendId;
+            rs.m_nResult = 1;
+            strcpy(rs.m_szFileMD5,rq->m_szFileMD5);
+            rs.m_UserId = rq->m_UserId;
+            info->filePath = item->GetFilePath()+QString("/")+info->fileName;
+            QMessageBox::about(NULL,"",info->filePath);
+            info->pFile = new QFile(info->filePath);
+            info->pFile->open(QIODevice::Append);
+            m_tcp->SendData((char *)&rs,sizeof(rs));
+    });
+    connect(work,SIGNAL(SIG_VALUE_CHANGE(int)),item,SLOT(slot_ChangeProcessBar(int)));
+    connect(this,SIGNAL(SIG_VALCHANGE(int)),item,SLOT(slot_ChangeProcessBar(int)));
+    connect(work,SIGNAL(SIG_TASK_OVER(STRU_FILE_INFO*)),this,SLOT(slot_FileSendSuss(STRU_FILE_INFO*)));
+
+}
+
+void ChatDlg::GetFile(char *szbuf)
+{
+    STRU_FILEBLOCK_RQ *rq = (STRU_FILEBLOCK_RQ*)szbuf;
+       QString Md5 = rq->m_szFileMD5;
+       if(map_Md5ToFile.find(Md5) != map_Md5ToFile.end())
+       {
+           STRU_FILE_INFO*info = map_Md5ToFile[Md5];
+          Q_EMIT SIG_WORK_GETFILE(info,szbuf);
+       }
 }
 
 
@@ -114,13 +179,18 @@ void ChatDlg::on_pb_send_clicked()
 void ChatDlg::on_pb_sendFile_clicked()
 {
     QString filePath = QFileDialog::getOpenFileName(this,QString("选择发送文件"));
-    if(!filePath.remove(" ").isEmpty())
+    QString temp = filePath;
+    if(!temp.remove(" ").isEmpty())
     {
-
+        auto ite = m_filels.begin();
+        while(ite!=m_filels.end())
+        {
+            (*ite)->Pause();
+            ++ite;
+        }
         qDebug()<<filePath;
         QFileInfo fileInfo(filePath);
         string fileName = fileInfo.fileName().toStdString();
-
 
 
 
@@ -133,9 +203,16 @@ void ChatDlg::on_pb_sendFile_clicked()
         strcpy(rq.m_szFileName , fileName.c_str());
 
         //发送文件头
-        //mtx.lock();
+        Sleep(300);
+
         m_tcp->SendData((char *)&rq,sizeof(rq));
-       // mtx.unlock();
+
+        auto pite = m_filels.begin();
+        while(pite!=m_filels.end())
+        {
+            (*pite)->Pause();
+            ++pite;
+        }
         //录入映射
         string strMD5 = rq.m_szFileMD5;
         QString MD5 = QString::fromStdString( strMD5 );
@@ -180,9 +257,9 @@ void ChatDlg::on_pushButton_clicked()
         strcpy(rq.m_szFileName , fileName.c_str());
 
         //发送文件头
-        //mtx.lock();
+
         m_tcp->SendData((char *)&rq,sizeof(rq));
-       // mtx.unlock();
+
         //录入映射
         string strMD5 = rq.m_szFileMD5;
         QString MD5 = QString::fromStdString( strMD5 );
@@ -202,6 +279,7 @@ void ChatDlg::on_pushButton_clicked()
 
 void ChatDlg::slot_FileSendSuss(STRU_FILE_INFO*info)
 {
+    qDebug()<<GetCurrentThreadId();
     if(info == NULL)
         return ;
     info->pFile->close();
@@ -229,8 +307,9 @@ void ChatDlg::slot_FileSendSuss(STRU_FILE_INFO*info)
        QThread *tid = map_Md5Tothread[info->fileMd5];
        auto ite = map_Md5Tothread.find(info->fileMd5);
        map_Md5Tothread.erase(ite);
-       tid->terminate();
-       tid->~QObject();
+       tid->quit();
+       tid->wait();
+       delete tid;
        tid = NULL;
 
 
@@ -246,13 +325,24 @@ void ChatDlg::slot_FileSendSuss(STRU_FILE_INFO*info)
     mtx.unlock();
 }
 
+
+
 void ChatDlg::on_pushButton_2_clicked()
 {
     //QString filePath = "C:/Users/44420/Desktop/4..暗红色中英文(1).docx";
-    QString filePath = "C:/Users/44420/Desktop/210430_1934redis内存.mp4.baiduyun.p.downloading";
-    if(!filePath.remove(" ").isEmpty())
+    //QString filePath = "C:/Users/44420/Desktop/210430_1934redis内存.mp4.baiduyun.p.downloading";
+    QString filePath = "C:/Users/44420/Pictures/Camera Roll/WIN_20201220_14_03_48_Pro.jpg";
+    QString temp = filePath;
+    if(!temp.remove(" ").isEmpty())
     {
 
+        auto ite = m_filels.begin();
+        while(ite!=m_filels.end())
+        {
+            (*ite)->Pause();
+            ++ite;
+        }
+        Sleep(300);
         qDebug()<<filePath;
         QFileInfo fileInfo(filePath);
         string fileName = fileInfo.fileName().toStdString();
@@ -270,6 +360,14 @@ void ChatDlg::on_pushButton_2_clicked()
 
         //发送文件头
         m_tcp->SendData((char *)&rq,sizeof(rq));
+
+        auto pite = m_filels.begin();
+        while(pite!=m_filels.end())
+        {
+            (*pite)->Pause();
+            ++pite;
+        }
+
         //录入映射
         string strMD5 = rq.m_szFileMD5;
         QString MD5 = QString::fromStdString( strMD5 );

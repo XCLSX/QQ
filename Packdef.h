@@ -45,6 +45,9 @@ typedef enum Net_PACK
     DEF_PACK_UPLOAD_RS,
     DEF_PACK_FILEBLOCK_RQ,                      //发送文件块请求
 
+    DEF_PACK_DEL_FRIEND_RQ,                     //删除好友请求
+    DEF_PACK_DEL_FRIEND_RS,                     //删除好友回复
+
     DEF_PACK_TEST,
 }Net_PACK;
 
@@ -267,7 +270,7 @@ typedef struct STRU_SENDMSG_RQ
     int m_Touserid;
     char msg[MAX_MGS_SIZE];
 }STRU_SENDMSG_RQ;
-
+//下线请求
 typedef struct STRU_OFFLINE_RQ
 {
     STRU_OFFLINE_RQ()
@@ -338,4 +341,28 @@ typedef struct STRU_FILEBLOCK_RQ
     int m_nBlockLen; //文件写入大小
     char m_szFileContent[MAX_CONTENT_LEN];
 }STRU_FILEBLOCK_RQ;
+//删除好友请求
+typedef struct STRU_DELFRIEND_RQ
+{
+    STRU_DELFRIEND_RQ()
+    {
+        m_nType = DEF_PACK_DEL_FRIEND_RQ;
+        m_userid = 0;
+        m_frid = 0;
+    }
+    PackType m_nType;
+    int m_userid;
+    int m_frid;
+}STRU_DELFRIEND_RQ;
+
+typedef struct STRU_DELFRIEND_RS
+{
+    STRU_DELFRIEND_RS()
+    {
+        m_nType = DEF_PACK_DEL_FRIEND_RS;
+        del_userid = 0;
+    }
+    PackType m_nType;
+    int del_userid;
+}STRU_DELFRIEND_Rs;
 #endif

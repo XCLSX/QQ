@@ -126,6 +126,97 @@ UserItem *QQMainDlg::GetFriendItem(int fid)
     return NULL;
 }
 
+void QQMainDlg::AcceptFile(char *szbuf)
+{
+    STRU_UPLOAD_RQ *rq = (STRU_UPLOAD_RQ*)szbuf;
+    ChatDlg *m_dlg = NULL;
+    auto ite = m_Msgls.begin();
+    while(ite!=m_Msgls.end())
+    {
+        if((*ite)->m_UserInfo.m_user_id == rq->m_UserId)
+        {
+            (*ite)->setVisible(false);
+            m_Msglayout->removeWidget(*ite);
+            (*ite)->SetCurrentMsg("收到文件");
+            (*ite)->setVisible(true);
+            (*ite)->num++;
+            m_Msglayout->insertWidget(0,*ite);
+            m_dlg = (*ite)->GetChatDlg();
+            break;
+        }
+        ++ite;
+    }
+    if(!m_dlg)
+    {
+        auto fite = m_Friendls.begin();
+        while(fite!=m_Friendls.end())
+        {
+            if((*fite)->m_UserInfo.m_user_id == rq->m_UserId)
+            {
+                break;
+            }
+            fite++;
+        }
+        UserItem *item = (*fite)->m_Copy();
+        item->num++;
+        m_Msgls.push_back(item);
+        item->SetCurrentMsg("收到文件");
+        m_Msglayout->insertWidget(0,item);
+        m_dlg = (*fite)->GetChatDlg();
+     }
+    m_dlg->AcceptFile(szbuf);
+
+}
+
+void QQMainDlg::GetFile(char *szbuf)
+{
+    STRU_FILEBLOCK_RQ *rq = (STRU_FILEBLOCK_RQ*)szbuf;
+    auto ite = m_Friendls.begin();
+    while(ite!=m_Friendls.end())
+    {
+        if((*ite)->m_UserInfo.m_user_id == rq->m_nUserId)
+        {
+            break;
+        }
+        ++ite;
+    }
+    (*ite)->m_chat->GetFile(szbuf);
+}
+
+void QQMainDlg::DelFriend(char *szbuf)
+{
+    STRU_DELFRIEND_RS *rs = (STRU_DELFRIEND_RS*)szbuf;
+    auto ite = m_Msgls.begin();
+    int del_id = rs->del_userid;
+    while(ite!=m_Msgls.end())
+    {
+        if((*ite)->m_UserInfo.m_user_id == del_id)
+        {
+            (*ite)->setVisible(false);
+            m_Msglayout->removeWidget(*ite);
+            delete *ite;
+            m_Msgls.erase(ite);
+            break;
+        }
+        ++ite;
+    }
+    auto pite = m_Friendls.begin();
+    while(pite!=m_Friendls.end())
+    {
+        if((*pite)->m_UserInfo.m_user_id==del_id)
+        {
+            (*pite)->setVisible(false);
+            m_Frilayout->removeWidget(*pite);
+            delete *pite;
+            m_Friendls.erase(pite);
+            break;
+        }
+        ++pite;
+    }
+}
+
+
+
 
 
 void QQMainDlg::on_pb_Search_clicked()
@@ -149,36 +240,28 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
     //聊天
     if(mode == 0)
     {
-        bool bflag = false;
         UserItem *pitem = (UserItem*)szbuf;
         auto ite = m_Msgls.begin();
         while(ite!=m_Msgls.end())
         {
             if((*ite)->m_UserInfo.m_user_id == pitem->m_UserInfo.m_user_id)
             {
-                bflag = true;
-                break;
+                (*ite)->setVisible(false);
+                m_Msglayout->removeWidget(*ite);
+                (*ite)->setVisible(true);
+                m_Msglayout->insertWidget(0,*ite);
+                return;
             }
             ++ite;
         }
 
         //曾经存在消息列表中
-        if(bflag)
-        {
-            (*ite)->setVisible(false);
-            m_Msglayout->removeWidget(*ite);
-            (*ite)->setVisible(true);
-            m_Msglayout->insertWidget(0,*ite);
-        }
-        else
-        {
-            UserItem *item = new UserItem;
-            item->SetInfo(&pitem->m_UserInfo,pitem->m_userid);
-            item->SetChatDlg(pitem->GetChatDlg());
-            item->num = pitem->num;
+
+
+            UserItem *item = pitem->m_Copy();
             m_Msgls.push_back(item);
             m_Msglayout->insertWidget(0,item);
-        }
+
 
     }//添加好友
     else if(mode == 1)
@@ -212,25 +295,32 @@ void QQMainDlg::slot_AddMsg(char *szbuf, int mode)
            delete delItem;
            delItem = NULL;
         });
-//        m_Addfrils.push_back(item);
-//        m_Msglayout->addWidget(item);
-//        connect(item,&AddFriendItem::SIG_mCloseWidget,[=](AddFriendItem*delItem)
-//        {
-//            auto ite = m_Addfrils.begin();
-//            while(ite!=m_Addfrils.end())
-//            {
-//                if((*ite)->m_userid == delItem->m_userid)
-//                {
-//                    m_Addfrils.erase(ite);
-//                    break;
-//                }
-//            }
-//            delItem->setVisible(false);
-//            m_Msglayout->removeWidget(delItem);
-//            delete delItem;
-//            delItem = NULL;
-//        });
+
     }
+}
+
+void QQMainDlg::slot_UpdateMsgLayout(UserItem *info,char * text)
+{
+    auto ite = m_Msgls.begin();
+    while(ite!=m_Msgls.end())
+    {
+        if((*ite)->m_UserInfo.m_user_id == info->m_UserInfo.m_user_id)
+        {
+            (*ite)->setVisible(false);
+            (*ite)->num++;
+            m_Msglayout->removeWidget(*ite);
+            (*ite)->SetCurrentMsg(text);
+            (*ite)->setVisible(true);
+            m_Msglayout->insertWidget(0,*ite);
+            return ;
+        }
+        ++ite;
+    }
+    UserItem *item = info->m_Copy();
+    item->num++;
+    item->SetCurrentMsg(text);
+    m_Msgls.push_back(item);
+    m_Msglayout->insertWidget(0,item);
 }
 
 void QQMainDlg::UpdateFriendStatus(char *szbuf)
