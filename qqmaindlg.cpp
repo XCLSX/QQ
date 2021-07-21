@@ -215,6 +215,24 @@ void QQMainDlg::DelFriend(char *szbuf)
     }
 }
 
+void QQMainDlg::UpdateUserInfo(char *szbuf)
+{
+    STRU_ALTER_USERINFO_RS *rs = (STRU_ALTER_USERINFO_RS*)szbuf;
+    m_userInfo ->m_icon_id = rs->m_iconid;
+    strcpy(m_userInfo->m_userName,rs->m_szName);
+    strcpy(m_userInfo->sz_feeling,rs->m_szFeeling);
+
+    QPixmap icon;
+    QString str = QString(":/tx/%1.png").
+            arg(m_userInfo->m_icon_id);
+    icon.load(str.toStdString().c_str());
+    ui->pb_icon->setIcon(icon);
+
+    ui->lb_name->setText(QString(m_userInfo->m_userName));
+    ui->lb_felling->setText(QString(m_userInfo->sz_feeling));
+
+}
+
 
 
 
@@ -227,7 +245,8 @@ void QQMainDlg::on_pb_Search_clicked()
 
 void QQMainDlg::on_pb_icon_clicked()
 {
-
+    m_AlterInfoDlg = new UserInfoDlg(m_userInfo);
+    m_AlterInfoDlg->show();
 }
 
 void QQMainDlg::AddUserItem(QWidget *item)
@@ -349,6 +368,7 @@ void QQMainDlg::UpdateFriendStatus(char *szbuf)
 {
     bool bFlag = false;
     STRU_UPDATE_STATUS *sus = (STRU_UPDATE_STATUS*)szbuf;
+
     auto ite = m_Friendls.begin();
     while(ite!=m_Friendls.end())
     {

@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <useritem.h>
 #include <addfrienditem.h>
+#include <userinfodlg.h>
 #include <QCloseEvent>
 class CKernel;
 namespace Ui {
@@ -31,6 +32,7 @@ public:
     void AcceptFile(char *);
     void GetFile(char *);
     void DelFriend(char *);
+    void UpdateUserInfo(char *);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0,QString str = "");
@@ -54,7 +56,7 @@ private:
     list<UserItem*> m_Friendls;
     list<UserItem*> m_Msgls;
     list<AddFriendItem*> m_Addfrils;
-
+    UserInfoDlg * m_AlterInfoDlg;
     QVBoxLayout *m_Frilayout;
     QVBoxLayout *m_Msglayout;
 

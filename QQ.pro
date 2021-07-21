@@ -27,6 +27,7 @@ SOURCES += \
     qqmaindlg.cpp \
     searchfrienddlg.cpp \
     searchfrienditem.cpp \
+    userinfodlg.cpp \
     useritem.cpp \
     worker.cpp
 
@@ -40,6 +41,7 @@ HEADERS += \
     qqmaindlg.h \
     searchfrienddlg.h \
     searchfrienditem.h \
+    userinfodlg.h \
     useritem.h \
     worker.h
 
@@ -51,6 +53,7 @@ FORMS += \
     qqmaindlg.ui \
     searchfrienddlg.ui \
     searchfrienditem.ui \
+    userinfodlg.ui \
     useritem.ui
 
 # Default rules for deployment.

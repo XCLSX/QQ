@@ -47,6 +47,8 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_UPLOAD_RQ - DEF_PACK_BASE] = slot_AcceptFile;
     NetPack[DEF_PACK_FILEBLOCK_RQ - DEF_PACK_BASE] = slot_GetFile;
     NetPack[DEF_PACK_DEL_FRIEND_RS - DEF_PACK_BASE] = slot_DelFriend;
+    NetPack[DEF_PACK_ALTER_USERINFO_RS - DEF_PACK_BASE] = slot_UpdateUserInfo;
+
 
 
 
@@ -205,4 +207,10 @@ void CKernel::slot_GetFile(char *szbuf, int nlen)
 void CKernel::slot_DelFriend(char *szbuf, int nlen)
 {
     m_maindlg->DelFriend(szbuf);
+}
+
+void CKernel::slot_UpdateUserInfo(char *szbuf, int nlen)
+{
+
+    m_maindlg->UpdateUserInfo(szbuf);
 }

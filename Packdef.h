@@ -48,6 +48,9 @@ typedef enum Net_PACK
     DEF_PACK_DEL_FRIEND_RQ,                     //删除好友请求
     DEF_PACK_DEL_FRIEND_RS,                     //删除好友回复
 
+    DEF_PACK_ALTER_USERINFO_RQ,                 //修改个人信息请求
+    DEF_PACK_ALTER_USERINFO_RS,
+
     DEF_PACK_TEST,
 }Net_PACK;
 
@@ -365,4 +368,38 @@ typedef struct STRU_DELFRIEND_RS
     PackType m_nType;
     int del_userid;
 }STRU_DELFRIEND_Rs;
+
+typedef struct STRU_ALTER_USERINFO_RQ
+{
+    STRU_ALTER_USERINFO_RQ()
+    {
+        m_nType = DEF_PACK_ALTER_USERINFO_RQ;
+        m_userid = 0;
+        m_iconid = 0;
+        memset(m_szName,0,MAX_SIZE);
+        memset(m_szFeeling,0,MAX_SIZE);
+    }
+    PackType m_nType;
+    int m_userid;
+    int m_iconid;
+    char m_szName[MAX_SIZE];
+    char m_szFeeling[MAX_SIZE];
+
+}STRU_ALTER_USERINFO_RQ;
+
+typedef struct STRU_ALTER_USERINFO_RS
+{
+    STRU_ALTER_USERINFO_RS()
+    {
+        m_nType = DEF_PACK_ALTER_USERINFO_RS;
+        m_iconid = 0;
+        memset(m_szName,0,MAX_SIZE);
+        memset(m_szFeeling,0,MAX_SIZE);
+    }
+    PackType m_nType;
+    int m_iconid;
+    char m_szName[MAX_SIZE];
+    char m_szFeeling[MAX_SIZE];
+
+}STRU_ALTER_USERINFO_RS;
 #endif

@@ -47,6 +47,7 @@ private slots:      //回复
     void slot_AcceptFile(char *,int);
     void slot_GetFile(char *,int);
     void slot_DelFriend(char *,int);
+    void slot_UpdateUserInfo(char *,int);
 public:
     LoginDlg *m_logindlg;
     QQMainDlg *m_maindlg;
