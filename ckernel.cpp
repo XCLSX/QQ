@@ -48,6 +48,12 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_FILEBLOCK_RQ - DEF_PACK_BASE] = slot_GetFile;
     NetPack[DEF_PACK_DEL_FRIEND_RS - DEF_PACK_BASE] = slot_DelFriend;
     NetPack[DEF_PACK_ALTER_USERINFO_RS - DEF_PACK_BASE] = slot_UpdateUserInfo;
+    NetPack[DEF_PACK_CREATEGROUP_RS - DEF_PACK_BASE] = slot_CreateGroupRs;
+    NetPack[DEF_PACK_GETGROUPINFO_RQ - DEF_PACK_BASE] = slot_GetGroupInfo;
+    NetPack[DEF_PACK_SENDGROUPMSG_RS - DEF_PACK_BASE] = slot_GetGroupMsg;
+
+
+
 
 
 
@@ -213,4 +219,22 @@ void CKernel::slot_UpdateUserInfo(char *szbuf, int nlen)
 {
 
     m_maindlg->UpdateUserInfo(szbuf);
+}
+
+void CKernel::slot_CreateGroupRs(char *szbuf, int nlen)
+{
+    m_maindlg->CreateGroupRs(szbuf);
+}
+
+void CKernel::slot_GetGroupInfo(char *szbuf,int nlen)
+{
+    m_maindlg->AddGroupInfo(szbuf);
+}
+
+void CKernel::slot_GetGroupMsg(char *szbuf, int nlen)
+{
+    STRU_SENDGROUPMSG_RQ *rq = (STRU_SENDGROUPMSG_RQ*)szbuf;
+    if(rq->m_userid == m_userInfo->m_user_id)
+        return ;
+    m_maindlg->GetGroupMsg(szbuf);
 }

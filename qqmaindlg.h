@@ -6,8 +6,10 @@
 #include <searchfrienddlg.h>
 #include <QVBoxLayout>
 #include <useritem.h>
+#include <groupitem.h>
 #include <addfrienditem.h>
 #include <userinfodlg.h>
+#include <creategroupdlg.h>
 #include <QCloseEvent>
 class CKernel;
 namespace Ui {
@@ -33,6 +35,9 @@ public:
     void GetFile(char *);
     void DelFriend(char *);
     void UpdateUserInfo(char *);
+    void CreateGroupRs(char *);
+    void AddGroupInfo(char *);
+    void GetGroupMsg(char*);
 public slots:
 
     void slot_AddMsg(char *,int mode = 0,QString str = "");
@@ -44,21 +49,28 @@ private slots:
 
     void on_pb_icon_clicked();
 
+    void on_pb_Cgroup_clicked();
+
 private:
 
 
 private:
     Ui::QQMainDlg *ui;
     SearchFriendDlg *m_SearchDlg;
+    CreateGroupDlg * m_CgroupDlg;
     STRU_USER_INFO* m_userInfo;
     //friend class CKernel;
 
     list<UserItem*> m_Friendls;
     list<UserItem*> m_Msgls;
+    list<GroupItem*> m_GroupMsgls;
+    list<GroupItem*> m_Groupls;
     list<AddFriendItem*> m_Addfrils;
     UserInfoDlg * m_AlterInfoDlg;
+
     QVBoxLayout *m_Frilayout;
     QVBoxLayout *m_Msglayout;
+    QVBoxLayout *m_Grouplayout;
 
 };
 

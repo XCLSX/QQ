@@ -7,7 +7,6 @@
 #include <QThread>
 #include <QVBoxLayout>
 #include <fileitem.h>
-//#include <mythread.h>
 #include <mutex>
 namespace Ui {
 

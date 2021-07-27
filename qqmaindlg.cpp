@@ -13,6 +13,8 @@ QQMainDlg::QQMainDlg(QWidget *parent) :
     ui->wid_friendList->setLayout(m_Frilayout);
     m_Msglayout = new QVBoxLayout;
     ui->wid_MessageList->setLayout(m_Msglayout);
+    m_Grouplayout = new QVBoxLayout;
+    ui->wid_groupList->setLayout(m_Grouplayout);
 
 }
 
@@ -233,6 +235,80 @@ void QQMainDlg::UpdateUserInfo(char *szbuf)
 
 }
 
+void QQMainDlg::CreateGroupRs(char *szbuf)
+{
+    STRU_CREATE_GROUP_RS *rs = (STRU_CREATE_GROUP_RS*)szbuf;
+    GroupItem  *item = new GroupItem(m_userInfo->m_user_id);
+    list<STRU_USER_INFO*>ls;
+    ls.push_back(m_userInfo);
+    QString g_name = QString(rs->m_szGroupName);
+    item->SetInfo(g_name,rs->m_groupid,0,ls);
+    m_Grouplayout->insertWidget(0,item);
+    m_Groupls.push_back(item);
+
+
+}
+
+void QQMainDlg::AddGroupInfo(char *szbuf)
+{
+    STRU_GET_GROUP_INFO_RQ *rq = (STRU_GET_GROUP_INFO_RQ*)szbuf;
+    list<STRU_USER_INFO*> ls;
+    int i=0;
+    while(rq->m_userInfo[i].m_user_id != 0)
+    {
+        ls.push_back(&rq->m_userInfo[i]);
+        ++i;
+    }
+    GroupItem*item = new GroupItem(m_userInfo->m_user_id);
+    item->SetInfo(rq->m_szGroupName,rq->m_groupid,rq->m_iconid,ls);
+    m_Groupls.push_back(item);
+    m_Grouplayout->addWidget(item);
+    connect(item->GetChatDlg(),&GroupChatDlg::SIG_SENDMSG,[=](char*item,QString msg,int m_groupid)
+    {
+        STRU_SENDGROUPMSG_RQ rq;
+        rq.m_groupid = m_groupid;
+        strcpy(rq.m_szMsg,msg.toStdString().c_str());
+        rq.m_userid = m_userInfo->m_user_id;
+        m_tcp->SendData((char*)&rq,sizeof(rq));
+    });
+
+}
+
+void QQMainDlg::GetGroupMsg(char *szbuf)
+{
+    STRU_SENDGROUPMSG_RQ *rq = (STRU_SENDGROUPMSG_RQ*)szbuf;
+
+    auto pite = m_GroupMsgls.begin();
+    while(pite!=m_GroupMsgls.end())
+    {
+        if((*pite)->m_group_id == rq->m_groupid)
+        {
+            (*pite)->setVisible(false);
+            m_Msglayout->removeWidget(*pite);
+            (*pite)->GetMsg(rq->m_userid,QString(rq->m_szMsg));
+            m_Msglayout->insertWidget(0,*pite);
+            (*pite)->setVisible(true);
+            return ;
+        }
+        ++pite;
+    }
+    auto ite = m_Groupls.begin();
+    while(ite!=m_Groupls.end())
+    {
+        if((*ite)->m_group_id == rq->m_groupid)
+            break;
+        ++ite;
+    }
+    if((*ite)->m_group_id == rq->m_groupid)
+    {
+         GroupItem *item = (*ite)->m_Copy();
+         item->GetMsg(rq->m_userid,QString(rq->m_szMsg));
+         m_GroupMsgls.push_back(item);
+         m_Msglayout->insertWidget(0,item);
+    }
+
+}
+
 
 
 
@@ -421,4 +497,11 @@ void QQMainDlg::UpdateFriendStatus(char *szbuf)
             else
                 m_Frilayout->addWidget(item);
     }
+}
+
+void QQMainDlg::on_pb_Cgroup_clicked()
+{
+    m_CgroupDlg = new CreateGroupDlg(m_userInfo->m_user_id);
+
+    m_CgroupDlg->show();
 }

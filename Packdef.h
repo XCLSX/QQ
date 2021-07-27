@@ -51,6 +51,13 @@ typedef enum Net_PACK
     DEF_PACK_ALTER_USERINFO_RQ,                 //修改个人信息请求
     DEF_PACK_ALTER_USERINFO_RS,
 
+    DEF_PACK_CREATEGROUP_RQ,                    //创建群聊请求
+    DEF_PACK_CREATEGROUP_RS,
+
+    DEF_PACK_GETGROUPINFO_RQ,                   //获取群信息
+
+    DEF_PACK_SENDGROUPMSG_RS,                   //发送群聊信息请求
+
     DEF_PACK_TEST,
 }Net_PACK;
 
@@ -402,4 +409,61 @@ typedef struct STRU_ALTER_USERINFO_RS
     char m_szFeeling[MAX_SIZE];
 
 }STRU_ALTER_USERINFO_RS;
+//创建群聊请求
+typedef struct STRU_CREATE_GROUP_RQ
+{
+    STRU_CREATE_GROUP_RQ()
+    {
+        m_nType = DEF_PACK_CREATEGROUP_RQ;
+        m_userid = 0;
+        memset(m_szGroupName,0,sizeof(m_szGroupName));
+    }
+    PackType m_nType;
+    int m_userid;
+    char m_szGroupName[MAX_SIZE];
+}STRU_CREATE_GROUP_RQ;
+typedef struct STRU_CREATE_GROUP_RS
+{
+    STRU_CREATE_GROUP_RS()
+    {
+        m_nType = DEF_PACK_CREATEGROUP_RS;
+        m_groupid = 0;
+        memset(m_szGroupName,0,sizeof (MAX_SIZE));
+    }
+    PackType m_nType;
+    int m_groupid;
+    char m_szGroupName[MAX_SIZE];
+}STRU_CREATE_GROUP_RS;
+typedef struct STRU_GET_GROUP_INFO_RQ
+{
+    STRU_GET_GROUP_INFO_RQ()
+    {
+        m_nType = DEF_PACK_GETGROUPINFO_RQ;
+        m_groupid = 0;
+        m_iconid = 0;
+        memset(m_szGroupName,0,MAX_SIZE);
+        memset(rightarr,2,sizeof(rightarr));
+    }
+    PackType m_nType;
+    int m_groupid;
+    char m_szGroupName[MAX_SIZE];
+    int m_iconid;
+    STRU_USER_INFO m_userInfo[100];
+    int rightarr[100];
+}STRU_GET_GROUP_INFO_RQ;
+
+typedef struct STRU_SENDGROUPMSG_RQ
+{
+    STRU_SENDGROUPMSG_RQ()
+    {
+        m_nType = DEF_PACK_SENDGROUPMSG_RS;
+        m_groupid = 0;
+        m_userid = 0;
+        memset(m_szMsg,0,sizeof(m_szMsg));
+    }
+    PackType m_nType;
+    int m_groupid;
+    int m_userid;
+    char m_szMsg[MAX_SIZE];
+}STRU_SENDGROUPMSG_RQ;
 #endif

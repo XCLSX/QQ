@@ -53,7 +53,7 @@
     <string notr="true">QWidget:hover{background-color: rgb(188, 188, 188);}
 </string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>1</x>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
+    <width>360</width>
     <height>720</height>
    </rect>
   </property>
@@ -210,7 +210,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="tb_friend">
+    <widget class="QTabWidget" name="tb_Main">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -218,7 +218,22 @@
       <attribute name="title">
        <string>    消息    </string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>9</number>
+       </property>
        <item>
         <widget class="QScrollArea" name="scrollArea">
          <property name="widgetResizable">
@@ -229,11 +244,26 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>326</width>
+            <width>334</width>
             <height>499</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
+            <number>9</number>
+           </property>
            <item>
             <widget class="QWidget" name="wid_MessageList" native="true"/>
            </item>
@@ -256,7 +286,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tb_friend_2">
+     <widget class="QWidget" name="tb_friend">
       <attribute name="title">
        <string>    朋友    </string>
       </attribute>
@@ -271,7 +301,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>326</width>
+            <width>334</width>
             <height>499</height>
            </rect>
           </property>
@@ -298,10 +328,47 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tb_group">
       <attribute name="title">
-       <string>页</string>
+       <string>     群聊    </string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_3">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>334</width>
+            <height>499</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QWidget" name="wid_groupList" native="true"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>462</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -373,7 +440,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="pb_Cgroup">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -387,7 +454,7 @@
          </size>
         </property>
         <property name="text">
-         <string/>
+         <string>群</string>
         </property>
        </widget>
       </item>
