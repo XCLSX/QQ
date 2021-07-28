@@ -38,9 +38,10 @@ public:
     void CreateGroupRs(char *);
     void AddGroupInfo(char *);
     void GetGroupMsg(char*);
+    void AddFriend(char *);
+
 public slots:
 
-    void slot_AddMsg(char *,int mode = 0,QString str = "");
 
 private slots:
 

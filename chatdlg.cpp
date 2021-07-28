@@ -174,7 +174,7 @@ void ChatDlg::on_pb_send_clicked()
     rq.m_userid = this->m_userid;
     rq.m_Touserid = m_charUserInfo->m_user_id;
     m_tcp->SendData((char *)&rq,sizeof(rq));
-    Q_EMIT SIG_ADDITEM(m_UserItem,0,str);
+    Q_EMIT SIG_SENDMSG(m_UserItem,str);
 }
 
 void ChatDlg::on_pb_sendFile_clicked()

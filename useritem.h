@@ -22,7 +22,7 @@ public:
     ChatDlg *GetChatDlg();
     void SetChatDlg(ChatDlg*);
     void UpdateMsgNum();
-    void SetCurrentMsg(char *);
+    void SetCurrentMsg(QString);
     void ChangeIconColor(int status,int);
     void mousePressEvent(QMouseEvent*event);
     UserItem *m_Copy();

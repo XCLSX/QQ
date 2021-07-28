@@ -112,7 +112,7 @@
            <string>TextLabel</string>
           </property>
          </widget>
-         <widget class="QLabel" name="lb_felling">
+         <widget class="QLabel" name="lb_currentMsg">
           <property name="geometry">
            <rect>
             <x>20</x>

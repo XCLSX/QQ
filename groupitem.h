@@ -25,16 +25,18 @@ public:
     void mouseDoubleClickEvent(QMouseEvent *event);
     GroupChatDlg *GetChatDlg();
     void UpdateMsgNum();
-    void SetCurrentMsg(char *);
+    void SetCurrentMsg(QString);
     void ChangeIconColor(int status,int);
     void mousePressEvent(QMouseEvent*event);
     GroupItem *m_Copy();
     void GetMsg(int userid,QString msg);
     int *num;   //未读消息数
+    QMenu *m_GroupMenu;
+
 signals:
-    //void SIG_DelMsg(int);
+    void SIG_DelMsg(int);
 private slots:
-    //void slot_DealMenu(QAction*);
+    void slot_DealMenu(QAction*);
 public:
     Ui::GroupItem *ui;
     QString m_group_name;
@@ -42,8 +44,6 @@ public:
     int m_userid;
     int m_iconid;
     GroupChatDlg *m_chatdlg;
-    //ChatDlg *m_chat;
-    //QMenu *m_UserMenu;
 };
 
 #endif // GROUPITEM_H

@@ -18,8 +18,9 @@ GroupChatDlg::~GroupChatDlg()
     delete ui;
 }
 
-void GroupChatDlg::setInfo(int groupid,list<STRU_USER_INFO *> ls)
+void GroupChatDlg::setInfo(QString name,int groupid,list<STRU_USER_INFO *> ls)
 {
+    ui->lb_name->setText(name+"("+groupid+")");
     m_groupid = groupid;
     auto ite = ls.begin();
     while(ite!=ls.end())

@@ -159,7 +159,7 @@ void CKernel::slot_Fresh_FriListRs(char *szbuf, int len)
 //添加好友请求
 void CKernel::slot_AddfriendRq(char *szbuf, int len)
 {
-    m_maindlg->slot_AddMsg(szbuf,1);
+    m_maindlg->AddFriend(szbuf);
 
 }
 

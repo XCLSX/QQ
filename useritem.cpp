@@ -68,9 +68,9 @@ void UserItem::UpdateMsgNum()
     ui->lb_num->setText(QString(str));
 }
 
-void UserItem::SetCurrentMsg(char *msg)
+void UserItem::SetCurrentMsg(QString msg)
 {
-    ui->lb_felling->setText(QString(msg));
+    ui->lb_felling->setText(msg);
 }
 
 void UserItem::ChangeIconColor(int status,int icon_id)

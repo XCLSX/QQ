@@ -17,7 +17,7 @@ class GroupChatDlg : public QWidget
 public:
     explicit GroupChatDlg(char *item,int groupid,QWidget *parent = nullptr);
     ~GroupChatDlg();
-    void setInfo(int m_groupid,list<STRU_USER_INFO*> ls);
+    void setInfo(QString name,int m_groupid,list<STRU_USER_INFO*> ls);
     void AddMsg(int userid,QString msg);
     list<STRU_USER_INFO*>*GetLs();
 private slots:
