@@ -22,11 +22,18 @@ ChatDlg::ChatDlg(QWidget *parent) :
     m_layout = new QVBoxLayout;
     ui->sa_File->setLayout(m_layout);
     fileTask_num  = 0;
+    pfile = NULL;
 }
 
 ChatDlg::~ChatDlg()
 {
     delete ui;
+    if(pfile)
+    {
+        pfile->close();
+        delete pfile;
+        pfile = NULL;
+    }
 
 }
 
@@ -37,6 +44,31 @@ void ChatDlg::SetInfo(char *p,int user_id,STRU_USER_INFO*info)
     ui->lb_name->setText(QString(m_charUserInfo->m_userName));
     m_UserItem = p;
     setWindowTitle(QString("与%1的聊天").arg(info->m_userName));
+    if(user_id == info->m_user_id)
+        return ;
+    //读取本地聊天记录
+    char path[100] = {0};
+    sprintf(path,"D:\\code\\qtProject\\tmp\\Msg%dTo%d.txt",user_id,info->m_user_id);
+    pfile = new QFile(QString(path));
+    if (pfile->open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+          while (!pfile->atEnd())
+          {
+              QByteArray line = pfile->readLine();
+              QString str(line);
+              int len = 0;
+              for(int i=0;i<str.size();i++)
+              {
+                  if(str[i] == ':')
+                      break;
+                  len++;
+              }
+              str.remove(0,len+1);
+              QString msg = QString(info->m_userName+QString(":")+str);
+              ui->tb_chat->append(msg);
+          }
+          pfile->close();
+    }
 }
 
 void ChatDlg::AddMsg(char *msg)
@@ -45,8 +77,13 @@ void ChatDlg::AddMsg(char *msg)
     QString str = QString("%1:").arg(m_charUserInfo->m_userName);
             str+=QString(msg);
     ui->tb_chat->append(str);
-
-
+    str+='\n';
+    if(pfile)
+    {
+        pfile->open(QIODevice::Append);
+        pfile->write(str.toStdString().c_str(),str.length());
+        pfile->close();
+    }
 }
 
 void ChatDlg::SendFile(char *szbuf)
@@ -175,6 +212,13 @@ void ChatDlg::on_pb_send_clicked()
     rq.m_Touserid = m_charUserInfo->m_user_id;
     m_tcp->SendData((char *)&rq,sizeof(rq));
     Q_EMIT SIG_SENDMSG(m_UserItem,str);
+    if(pfile)
+    {
+        QString msg = "我:"+str+'\n';
+        pfile->open(QIODevice::Append);
+        pfile->write(msg.toStdString().c_str(),msg.length());
+        pfile->close();
+    }
 }
 
 void ChatDlg::on_pb_sendFile_clicked()

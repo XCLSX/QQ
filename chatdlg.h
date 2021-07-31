@@ -51,6 +51,7 @@ private:
     QVBoxLayout *m_layout;
     int fileTask_num;
     mutex mtx;
+    QFile *pfile;
 };
 
 #endif // CHATDLG_H
