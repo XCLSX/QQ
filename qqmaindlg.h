@@ -11,6 +11,7 @@
 #include <userinfodlg.h>
 #include <creategroupdlg.h>
 #include <QCloseEvent>
+#include <hotpointdlg.h>
 class CKernel;
 namespace Ui {
 class QQMainDlg;
@@ -39,7 +40,7 @@ public:
     void AddGroupInfo(char *);
     void GetGroupMsg(char*);
     void AddFriend(char *);
-
+    HotPointDlg *GetHotDlg();
 public slots:
 
 
@@ -52,6 +53,8 @@ private slots:
 
     void on_pb_Cgroup_clicked();
 
+    void on_pb_HotLine_clicked();
+
 private:
 
 
@@ -59,6 +62,7 @@ private:
     Ui::QQMainDlg *ui;
     SearchFriendDlg *m_SearchDlg;
     CreateGroupDlg * m_CgroupDlg;
+    HotPointDlg *m_hotDlg;
     STRU_USER_INFO* m_userInfo;
     //friend class CKernel;
 

@@ -25,6 +25,8 @@ SOURCES += \
     fileitem.cpp \
     groupchatdlg.cpp \
     groupitem.cpp \
+    hotpointdlg.cpp \
+    hotpointitem.cpp \
     logindlg.cpp \
     main.cpp \
     qqmaindlg.cpp \
@@ -43,6 +45,8 @@ HEADERS += \
     fileitem.h \
     groupchatdlg.h \
     groupitem.h \
+    hotpointdlg.h \
+    hotpointitem.h \
     logindlg.h \
     qqmaindlg.h \
     searchfrienddlg.h \
@@ -58,6 +62,8 @@ FORMS += \
     fileitem.ui \
     groupchatdlg.ui \
     groupitem.ui \
+    hotpointdlg.ui \
+    hotpointitem.ui \
     logindlg.ui \
     qqmaindlg.ui \
     searchfrienddlg.ui \

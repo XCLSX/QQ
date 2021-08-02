@@ -212,7 +212,7 @@
    <item>
     <widget class="QTabWidget" name="tb_Main">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tb_message">
       <attribute name="title">
@@ -459,7 +459,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_8">
+       <widget class="QPushButton" name="pb_HotLine">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -473,7 +473,7 @@
          </size>
         </property>
         <property name="text">
-         <string/>
+         <string>热</string>
         </property>
        </widget>
       </item>

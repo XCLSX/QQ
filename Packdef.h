@@ -58,6 +58,9 @@ typedef enum Net_PACK
 
     DEF_PACK_SENDGROUPMSG_RS,                   //发送群聊信息请求
 
+    DEF_PACK_GETHOT_POINT_RQ,                    //获取热搜请求
+    DEF_PACK_GETHOT_POINT_RS,
+
     DEF_PACK_TEST,
 }Net_PACK;
 
@@ -466,4 +469,34 @@ typedef struct STRU_SENDGROUPMSG_RQ
     int m_userid;
     char m_szMsg[MAX_SIZE];
 }STRU_SENDGROUPMSG_RQ;
+//获取热搜请求
+typedef struct STRU_GETHOTPOINT_RQ
+{
+    STRU_GETHOTPOINT_RQ()
+    {
+        m_nType = DEF_PACK_GETHOT_POINT_RQ;
+    }
+    PackType m_nType;
+
+}STRU_GETHOTPOINT_RQ;
+typedef struct hotP_t
+{
+    hotP_t()
+    {
+        memset(sz_title,0,MAX_SIZE);
+        memset(sz_url,0,MAX_PATH);
+    }
+    char sz_title[MAX_SIZE];
+    char sz_url[MAX_PATH];
+}hotP_t;
+typedef struct STRU_GETHOTPOINT_RS
+{
+    STRU_GETHOTPOINT_RS()
+    {
+        m_nType = DEF_PACK_GETHOT_POINT_RS;
+    }
+    PackType m_nType;
+    hotP_t m_hotres[50];
+
+}STRU_GETHOTPOINT_RS;
 #endif

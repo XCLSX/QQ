@@ -51,6 +51,8 @@ void CKernel::SetNetPack()
     NetPack[DEF_PACK_CREATEGROUP_RS - DEF_PACK_BASE] = slot_CreateGroupRs;
     NetPack[DEF_PACK_GETGROUPINFO_RQ - DEF_PACK_BASE] = slot_GetGroupInfo;
     NetPack[DEF_PACK_SENDGROUPMSG_RS - DEF_PACK_BASE] = slot_GetGroupMsg;
+    NetPack[DEF_PACK_GETHOT_POINT_RS - DEF_PACK_BASE] = slot_GetHotLine;
+
 
 
 
@@ -237,4 +239,9 @@ void CKernel::slot_GetGroupMsg(char *szbuf, int nlen)
     if(rq->m_userid == m_userInfo->m_user_id)
         return ;
     m_maindlg->GetGroupMsg(szbuf);
+}
+
+void CKernel::slot_GetHotLine(char *szbuf, int nlen)
+{
+    m_maindlg->GetHotDlg()->InitInfo(szbuf);
 }

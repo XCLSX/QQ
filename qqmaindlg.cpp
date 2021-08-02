@@ -483,6 +483,11 @@ void QQMainDlg::AddFriend(char *szbuf)
 
 }
 
+HotPointDlg *QQMainDlg::GetHotDlg()
+{
+    return m_hotDlg;
+}
+
 void QQMainDlg::slot_UpdateMsgLayout(UserItem *info,char * text)
 {
     auto ite = m_Msgls.begin();
@@ -571,4 +576,14 @@ void QQMainDlg::on_pb_Cgroup_clicked()
     m_CgroupDlg = new CreateGroupDlg(m_userInfo->m_user_id);
 
     m_CgroupDlg->show();
+}
+
+
+void QQMainDlg::on_pb_HotLine_clicked()
+{
+    STRU_GETHOTPOINT_RQ rq;
+
+    m_hotDlg = new HotPointDlg;
+
+    m_tcp->SendData((char *)&rq,sizeof(rq));
 }

@@ -51,6 +51,7 @@ private slots:      //回复
     void slot_CreateGroupRs(char* ,int);
     void slot_GetGroupInfo(char *,int);
     void slot_GetGroupMsg(char *,int);
+    void slot_GetHotLine(char *,int);
 public:
     LoginDlg *m_logindlg;
     QQMainDlg *m_maindlg;
